@@ -36,7 +36,6 @@
         }
       }
     ],
-    "@typescript-eslint/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/consistent-type-imports": "error",
     "@stylistic/ts/indent": ["error", 2],
