@@ -1,0 +1,6 @@
+dist
+node_modules
+.eslintrc.json
+.lintstagedrc.json
+commitlint.config.js
+vite.config.ts
