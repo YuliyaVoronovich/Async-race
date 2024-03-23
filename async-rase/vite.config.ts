@@ -3,7 +3,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   base: './',
-  plugins: [tsconfigPaths()],
+  plugins: [tsconfigPaths(),],
   css: {
     modules: {
       localsConvention: 'camelCase',
