@@ -2,7 +2,9 @@ import { BaseComponent } from '../components/base-component';
 import { Button } from '../components/button/button';
 
 export default class Page extends BaseComponent {
-  constructor(private section: BaseComponent) {
+  private section: BaseComponent;
+
+  constructor() {
     super({ tagName: 'main', className: 'main' });
     this.section = new BaseComponent({
       tagName: 'section',
@@ -23,9 +25,8 @@ export default class Page extends BaseComponent {
     return new Button({
       className: 'form-button game-button',
       textContent: 'Garage',
-      onClick: (e): void => {
-        e.preventDefault();
-        document.location.href = `#garage`;
+      onClick: (): void => {
+        window.location.href = `#garage`;
       },
     });
   }
@@ -34,9 +35,8 @@ export default class Page extends BaseComponent {
     return new Button({
       className: 'form-button game-button',
       textContent: 'Winners',
-      onClick: (e): void => {
-        e.preventDefault();
-        document.location.href = `#winners`;
+      onClick: (): void => {
+        window.location.href = `#winners`;
       },
     });
   }

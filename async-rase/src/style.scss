@@ -1,0 +1,48 @@
+@import 'normalize.css';
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Chelsea Market, Verdana, Geneva, Tahoma, sans-serif;;
+  font-size: 20px;
+  font-weight: 400;
+  color: #413acf;
+}
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background: url('./app/assets/images/page_garage.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: rgb(53 112 177 / 49%);
+}
+
+.page-section {
+  width: 100%;
+}

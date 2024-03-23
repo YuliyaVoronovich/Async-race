@@ -1,10 +1,10 @@
-// import './button.css';
+import './button.scss';
 import { BaseComponent } from '../base-component';
 
 interface IButton {
   className: string;
   textContent?: string;
-  onClick?: (e: Event) => void;
+  onClick?: () => void;
 }
 
 export class Button extends BaseComponent {
