@@ -3,14 +3,16 @@ import { PAGE_LIMIT_ITMES_GARAGE, baseUrl } from '../app/constants';
 
 const GARAGE_URL = `${baseUrl}/garage`;
 
-async function client(endpoint: string, { body, ...customConfig } = {}) {
-  const headers = { 'content-type': 'application/json' };
+async function request(
+  endpoint: string,
+  { body, method, headers }: { body?: object | null; method: string; headers?: HeadersInit } = { method: 'GET' },
+) {
+  const defaultHeaders = { 'content-type': 'application/json' };
   const config = {
-    method: body ? 'POST' : 'GET',
-    ...customConfig,
+    method,
     headers: {
+      ...defaultHeaders,
       ...headers,
-      // ...customConfig.headers,
     },
     body: body ? JSON.stringify(body) : null,
   };
@@ -27,19 +29,19 @@ async function client(endpoint: string, { body, ...customConfig } = {}) {
 }
 
 export function getCars(page: number, limit = PAGE_LIMIT_ITMES_GARAGE) {
-  return client(`garage?_page=${page}&_limit=${limit}`);
+  return request(`garage?_page=${page}&_limit=${limit}`);
 }
 
 export function createCar(body: { name: string; color: string }) {
-  return client('garage', { body });
+  return request('garage', { body, method: 'POST' });
 }
 
 export function removeCar(id: number) {
-  return client(`garage/${id}`, { method: 'DELETE' });
+  return request(`garage/${id}`, { method: 'DELETE' });
 }
 
 export function updateCar(id: number, update: { name: string; color: string }) {
-  return client(`garage/${id}`, {
+  return request(`garage/${id}`, {
     method: 'PUT',
     body: update,
   });

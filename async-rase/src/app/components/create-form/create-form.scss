@@ -1,7 +1,37 @@
 .create-form {
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 380px;
   width: 100%;
-  min-height: 200px;
+  min-height: 100px;
   margin: 10px 0 10px 30px;
+  padding: 5px;
   background: rgba(185 189 193 / 0.2);
+}
+
+.form-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.form-input-name {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.form-input-color {
+  width: 33px;
+  height: 33px;
+}
+
+.form-input-button {
+  width: 80px;
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  color: #deddf6;
+  background: rgb(34, 44, 134);
 }

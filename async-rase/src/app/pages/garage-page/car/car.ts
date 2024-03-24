@@ -1,7 +1,7 @@
 import './car.scss';
 import type { ICar } from '../../../interfaces/car';
 import { BaseComponent } from '../../../components/base-component';
-import motoImage from '../../../assets/images/moto1.svg?raw';
+import motoImage from '../../../assets/images/moto.svg?raw';
 
 export class Car extends BaseComponent {
   private carName: BaseComponent;

@@ -3,7 +3,6 @@ import type { ICar } from '../../../interfaces/car';
 import { BaseComponent } from '../../../components/base-component';
 import { Car } from '../car/car';
 import { Button } from '../../../components/button/button';
-import { CarService } from '../../../sevices/car-service';
 
 export class CarTrack extends BaseComponent {
   private readonly car: Car;
@@ -14,24 +13,24 @@ export class CarTrack extends BaseComponent {
 
   private readonly deleteButton: Button;
 
-  constructor(car: ICar) {
+  constructor(
+    currentCar: ICar,
+    removeCalback: (id: number, track: BaseComponent) => void,
+    updateCalback: (car: ICar) => void,
+  ) {
     super({ tagName: 'div', className: 'car-track' });
-    this.id = car.id;
-    this.car = new Car(car);
-    this.updateButton = new Button({ className: 'track-button edit-button', textContent: 'E' });
+    this.id = currentCar.id;
+    this.car = new Car(currentCar);
+    this.updateButton = new Button({
+      className: 'track-button edit-button',
+      textContent: 'E',
+      onClick: () => updateCalback(currentCar),
+    });
     this.deleteButton = new Button({
       className: 'track-button delete-button',
       textContent: 'D',
-      onClick: this.removeCar,
+      onClick: () => removeCalback(this.id, this),
     });
     this.appendChildren([this.updateButton, this.deleteButton, this.car]);
   }
-
-  private removeCar = (): void => {
-    CarService.removeCar(this.id)
-      .then(() => {
-        this.destroy();
-      })
-      .catch(() => {});
-  };
 }

@@ -1,10 +1,16 @@
 import type { BaseComponent } from './components/base-component';
 import type Page from './pages/page';
 
-// const mapRoutes = {
-//   '/garage': import('./pages/garage-page/garage-page'),
-//   '/winners': import('./pages/winners-page/winners-page'),
-// } as const;
+const mapRoutes = {
+  garage: () => import('./pages/garage-page/garage-page').then((item) => item.GaragePage),
+  winners: () => import('./pages/winners-page/winners-page').then((item) => item.WinnersPage),
+};
+
+type Route = keyof typeof mapRoutes;
+
+function isValidRoute(route: string): route is Route {
+  return Object.keys(mapRoutes).includes(route);
+}
 
 export default class Router {
   constructor(private routerOutlet: Page) {
@@ -13,24 +19,26 @@ export default class Router {
   }
 
   public handleLocationChange(): void {
-    // const pathname = window.location.hash.slice(1);
-    // const currentPath = `/${pathname}`;
-    const currentPath = '/garage';
+    const pathname = window.location.hash.slice(1);
 
-    this.setViewContent(currentPath)
+    if (!isValidRoute(pathname)) {
+      return;
+    }
+
+    this.setViewContent(pathname)
       .then((data) => {
         this.routerOutlet.setContent(data);
       })
       .catch(() => {});
   }
 
-  private setViewContent = async (location: string): Promise<BaseComponent> => {
-    const { GaragePage } = await import('./pages/garage-page/garage-page');
-    return new GaragePage();
-  };
-
-  // private setViewContent = async (location: keyof typeof mapRoutes): Promise<BaseComponent> => {
-  //   const { GaragePage } = await mapRoutes[location];
+  // private setViewContent = async (location: string): Promise<BaseComponent> => {
+  //   const { GaragePage } = await import('./pages/garage-page/garage-page');
   //   return new GaragePage();
   // };
+
+  private setViewContent = async (location: keyof typeof mapRoutes): Promise<BaseComponent> => {
+    const Page = await mapRoutes[location]();
+    return new Page();
+  };
 }
