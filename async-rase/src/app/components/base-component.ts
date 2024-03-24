@@ -85,6 +85,10 @@ export class BaseComponent {
     this.node.classList.toggle(className, force);
   }
 
+  public setStyle(property: string, value: string): void {
+    this.node.attributeStyleMap.set(property, value);
+  }
+
   public addListener(
     event: string,
     listener: (e: Event) => void,

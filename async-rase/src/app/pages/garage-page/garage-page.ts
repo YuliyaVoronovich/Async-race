@@ -21,7 +21,7 @@ export class GaragePage extends BaseComponent {
     super({ tagName: 'div', className: 'garage-wrapper' });
     this.header = new BaseComponent({ tagName: 'h2', className: 'title', textContent: `Garage` });
     this.pageNumber = new BaseComponent({ tagName: 'h3', className: 'page-number', textContent: `Page` });
-    this.form = new CreateForm();
+    this.form = new CreateForm(this.getFormData);
     this.tracksContainer = new BaseComponent({
       tagName: 'div',
       className: 'garage-tracks',
@@ -36,4 +36,17 @@ export class GaragePage extends BaseComponent {
     this.carTracks = cars.map((car) => new CarTrack(car));
     this.tracksContainer.appendChildren([...this.carTracks]);
   }
+
+  private updateTracks(): void {
+    this.tracksContainer.destroyChildren();
+    this.createTracks(this.currentPage).catch(() => {});
+  }
+
+  private getFormData = (name: string, color: string) => {
+    CarService.createCar(name, color)
+      .then(() => {
+        this.updateTracks();
+      })
+      .catch(() => {});
+  };
 }

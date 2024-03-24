@@ -3,7 +3,7 @@ import { BaseComponent } from '../base-component';
 interface IInput {
   type: string;
   classNameInput: string;
-  name: string;
+  name?: string;
   placeholder?: string;
   value?: string | number;
   onInput?: (input: HTMLInputElement) => boolean;
@@ -20,7 +20,7 @@ export class Input extends BaseComponent {
     this.input = this.node as HTMLInputElement;
 
     this.addListener('change', () => onInput);
-    this.setAttributes(type, name, placeholder ?? '', value ?? '');
+    this.setAttributes(type, name ?? '', placeholder ?? '', value ?? '');
   }
 
   private setAttributes(type: string, name: string, placeholder: string, value: number | string): void {
