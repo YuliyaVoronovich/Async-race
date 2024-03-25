@@ -89,6 +89,10 @@ export class BaseComponent {
     this.node.attributeStyleMap.set(property, value);
   }
 
+  public deleteStyle(property: string): void {
+    this.node.attributeStyleMap.delete(property);
+  }
+
   public addListener(
     event: string,
     listener: (e: Event) => void,

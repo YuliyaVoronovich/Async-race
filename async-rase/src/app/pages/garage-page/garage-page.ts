@@ -1,11 +1,18 @@
 import './garage-page.scss';
+import { chooseEngine, startDrive } from '../../../api/engine-api';
 import { CarService } from '../../sevices/car-service';
 import { BaseComponent } from '../../components/base-component';
 import { CreateForm } from '../../components/create-form/create-form';
 import { CarTrack } from './car-track/car-track';
 import { Button } from '../../components/button/button';
 import type { ICar } from '../../interfaces/car';
+import type { Car } from './car/car';
 
+enum DriveStatus {
+  started = 'started',
+  stopped = 'stopped',
+  drive = 'drive',
+}
 export class GaragePage extends BaseComponent {
   private readonly header = new BaseComponent({ tagName: 'h2', className: 'title', textContent: `Garage ()` });
 
@@ -47,7 +54,16 @@ export class GaragePage extends BaseComponent {
 
   private async createTracks(page: number): Promise<void> {
     const cars = await CarService.getCars(page);
-    this.carTracks = cars.map((car) => new CarTrack(car, this.removeCar, this.updateCar));
+    this.carTracks = cars.map(
+      (car) =>
+        new CarTrack({
+          currentCar: car,
+          removeCar: this.removeCar,
+          updateCar: this.updateCar,
+          startAnimateCar: this.startAnimateCar,
+          stopAnimateCar: this.stopAnimateCar,
+        }),
+    );
     this.tracksContainer.appendChildren([...this.carTracks]);
   }
 
@@ -83,7 +99,24 @@ export class GaragePage extends BaseComponent {
   };
 
   private updateCar = (car: ICar): void => {
-    console.log(car);
     this.form.fullDataOfCar(car);
+  };
+
+  private startAnimateCar = async (car: Car): Promise<void> => {
+    const { distance, velocity } = await chooseEngine(car.idcar, DriveStatus.started);
+    car.startAnimation(`${distance / velocity}ms`);
+    startDrive(car.idcar)
+      .then((res) => {
+        console.log(res);
+        if (!res.success) {
+          car.pauseAnimation();
+        }
+      })
+      .catch(() => {});
+  };
+
+  private stopAnimateCar = async (car: Car): Promise<void> => {
+    await chooseEngine(car.idcar, DriveStatus.stopped);
+    car.stopAnimation();
   };
 }

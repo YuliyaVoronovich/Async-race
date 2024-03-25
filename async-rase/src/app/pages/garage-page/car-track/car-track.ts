@@ -4,6 +4,14 @@ import { BaseComponent } from '../../../components/base-component';
 import { Car } from '../car/car';
 import { Button } from '../../../components/button/button';
 
+type CarTrackType = {
+  currentCar: ICar;
+  removeCar: (id: number, track: BaseComponent) => void;
+  updateCar: (car: ICar) => void;
+  startAnimateCar: (car: Car) => void;
+  stopAnimateCar: (car: Car) => void;
+};
+
 export class CarTrack extends BaseComponent {
   private readonly car: Car;
 
@@ -13,24 +21,36 @@ export class CarTrack extends BaseComponent {
 
   private readonly deleteButton: Button;
 
-  constructor(
-    currentCar: ICar,
-    removeCalback: (id: number, track: BaseComponent) => void,
-    updateCalback: (car: ICar) => void,
-  ) {
+  private readonly startButton: Button;
+
+  private readonly stopButton: Button;
+
+  constructor({ currentCar, removeCar, updateCar, startAnimateCar, stopAnimateCar }: CarTrackType) {
     super({ tagName: 'div', className: 'car-track' });
     this.id = currentCar.id;
     this.car = new Car(currentCar);
     this.updateButton = new Button({
       className: 'track-button edit-button',
       textContent: 'E',
-      onClick: () => updateCalback(currentCar),
+      onClick: () => updateCar(currentCar),
     });
     this.deleteButton = new Button({
       className: 'track-button delete-button',
       textContent: 'D',
-      onClick: () => removeCalback(this.id, this),
+      onClick: () => removeCar(this.id, this),
     });
-    this.appendChildren([this.updateButton, this.deleteButton, this.car]);
+    const controls = new BaseComponent({ tagName: 'span', className: 'controls' });
+    this.startButton = new Button({
+      className: 'track-button start-button',
+      textContent: 'Start',
+      onClick: () => startAnimateCar(this.car),
+    });
+    this.stopButton = new Button({
+      className: 'track-button stop-button',
+      textContent: 'Stop',
+      onClick: () => stopAnimateCar(this.car),
+    });
+    controls.appendChildren([this.startButton, this.stopButton]);
+    this.appendChildren([this.updateButton, this.deleteButton, controls, this.car]);
   }
 }

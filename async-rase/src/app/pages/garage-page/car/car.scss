@@ -2,16 +2,16 @@
   width: 100%;
 }
 
-.car-wrapper-container::after {
-  content: "";
-  display: block;
-  background: repeating-linear-gradient(to right, #1d1c1c, #cad3dd 5px);
-  width: 100%;
-  height: 5px;
-  bottom: 30px;
-}
-
 .car-image svg {
   width: 40px;
   height: 40px;
+}
+
+@keyframes move {
+  from {
+    margin-left: 0;
+  }
+  to {
+    margin-left: 90%;
+  }
 }

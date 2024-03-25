@@ -1,7 +1,5 @@
-import type { ICar } from '../app/interfaces/car';
+import type { CarResponse, ICar } from '../app/interfaces/car';
 import { PAGE_LIMIT_ITMES_GARAGE, baseUrl } from '../app/constants';
-
-const GARAGE_URL = `${baseUrl}/garage`;
 
 async function request(
   endpoint: string,
@@ -17,6 +15,9 @@ async function request(
     body: body ? JSON.stringify(body) : null,
   };
   return fetch(`${baseUrl}/${endpoint}`, config).then(async (response) => {
+    if (response.status === 404) {
+      return {} as CarResponse;
+    }
     if (response.ok) {
       return {
         items: (await response.json()) as ICar[],
@@ -34,6 +35,10 @@ export function getCars(page: number, limit = PAGE_LIMIT_ITMES_GARAGE) {
 
 export function createCar(body: { name: string; color: string }) {
   return request('garage', { body, method: 'POST' });
+}
+
+export function getCar(id: number) {
+  return request(`garage/${id}`, { method: 'GET' });
 }
 
 export function removeCar(id: number) {
@@ -55,8 +60,3 @@ export function updateCar(id: number, update: { name: string; color: string }) {
 //     count: response.headers.get('X-Total-Count') ?? '0',
 //   };
 // }
-
-export async function getCar(id: number): Promise<ICar> {
-  const response = await fetch(`${GARAGE_URL}/${id}`);
-  return response.json() as Promise<ICar>;
-}

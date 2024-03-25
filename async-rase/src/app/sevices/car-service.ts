@@ -12,7 +12,6 @@ class Car {
   public async getCars(page: number): Promise<ICar[]> {
     const cars = await getCars(page);
     this.carsCount.notify(Number(cars.count));
-    console.log(this.carsCount);
     return cars.items;
   }
 
