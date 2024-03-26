@@ -4,14 +4,56 @@
   justify-content: center;
 }
 
+.garage-tracks {
+  min-height: calc(100vh + 20px);
+}
+
 .title {
   font-size: 44px;
   text-align: center;
 }
+
+.page-number {
+  font-size: 26px;
+}
+
 .control-button-wrapper {
   display: flex;
 }
 
+.wrapper {
+  display: flex;
+  margin: 10px 0 10px 30px;
+}
+
+.control-race-wrapper {
+  margin-left: 10px;
+}
+
 .control-button {
+  height: 30px;
   margin-left: 5px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #10e468;
+  background: rgba(23, 23, 25, 0.9);
+  border: 1px solid rgb(222, 223, 231);
+  user-select: none;
+  cursor: pointer;
+}
+
+.control-button:hover {
+  scale: 0.9;
+}
+
+.control-button.disabled {
+  background: rgb(222, 223, 231, 0.3);
+  pointer-events: none;
+}
+
+.control-race-wrapper .control-button {
+  min-width: 120px;
+  margin-left: 5px;
+  padding: 0 10px;
 }

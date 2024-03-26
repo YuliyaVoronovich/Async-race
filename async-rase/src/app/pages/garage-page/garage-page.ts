@@ -7,6 +7,7 @@ import { CarTrack } from './car-track/car-track';
 import { Button } from '../../components/button/button';
 import type { ICar } from '../../interfaces/car';
 import type { Car } from './car/car';
+import { PAGE_LIMIT_GARAGE, START_PAGE } from '../../constants';
 
 enum DriveStatus {
   started = 'started',
@@ -14,43 +15,84 @@ enum DriveStatus {
   drive = 'drive',
 }
 export class GaragePage extends BaseComponent {
+  private currentPage = 1;
+
+  private countPages = 1;
+
   private readonly header = new BaseComponent({ tagName: 'h2', className: 'title', textContent: `Garage ()` });
 
-  private readonly pageNumber = new BaseComponent({ tagName: 'h3', className: 'page-number', textContent: `Page #1` });
+  private readonly pageNumber = new BaseComponent({ tagName: 'h3', className: 'page-number', textContent: `Page #` });
 
   private readonly form: CreateForm;
 
-  private readonly tracksContainer: BaseComponent;
+  private readonly tracksContainer = new BaseComponent({
+    tagName: 'div',
+    className: 'garage-tracks',
+  });
 
   private carTracks: CarTrack[] = [];
-
-  private readonly currentPage = 1;
 
   private readonly prevButton = new Button({ className: 'control-button prev-button', textContent: 'PREV' });
 
   private readonly nextButton = new Button({ className: 'control-button next-button', textContent: 'NEXT' });
 
+  private readonly raceAll = new Button({ className: 'control-button start-button', textContent: 'Start All' });
+
+  private readonly resetAll = new Button({ className: 'control-button stop-button', textContent: 'Stop All' });
+
   private readonly onCarsCountChange: (count: number) => void;
 
   constructor() {
     super({ tagName: 'div', className: 'garage-wrapper' });
+    this.prevButton.addClass('disabled');
+
     const controlsWrapper = new BaseComponent({ tagName: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
     this.form = new CreateForm(this.getFormData, this.getFormDataUpdate, this.randomGenerateCars);
+    const wrapper = new BaseComponent({ tagName: 'div', className: 'wrapper' });
+    const controlsStartWrapper = new BaseComponent({ tagName: 'div', className: 'control-race-wrapper' });
+
+    controlsStartWrapper.appendChildren([this.raceAll, this.resetAll]);
+    wrapper.appendChildren([this.form, controlsStartWrapper]);
+
     this.onCarsCountChange = (count: number) => {
       this.header.setTextContent(`Garage (${count})`);
+      this.countPages = Math.ceil(count / PAGE_LIMIT_GARAGE);
+      this.updatePageTitle();
+      this.checkNextButton();
     };
-    this.tracksContainer = new BaseComponent({
-      tagName: 'div',
-      className: 'garage-tracks',
-    });
     this.createTracks(this.currentPage)
       .then(() => {})
       .catch(() => {});
 
     CarService.carsCount.subscribe(this.onCarsCountChange);
-    this.appendChildren([this.header, controlsWrapper, this.form, this.tracksContainer]);
+    this.appendChildren([this.header, controlsWrapper, wrapper, this.tracksContainer]);
+
+    this.nextButton.addListener('click', (e: Event) => {
+      e.preventDefault();
+      this.checkNextButton();
+      this.prevButton.removeClass('disabled');
+      this.currentPage += 1;
+      this.updatePageTitle();
+      this.updateTracks();
+    });
+    this.prevButton.addListener('click', (e: Event) => {
+      e.preventDefault();
+      if (this.currentPage === START_PAGE + 1) {
+        this.prevButton.addClass('disabled');
+      }
+      this.nextButton.removeClass('disabled');
+      this.currentPage -= 1;
+      this.updatePageTitle();
+      this.updateTracks();
+    });
   }
+
+  private checkNextButton = () => {
+    if (this.currentPage === this.countPages) {
+      this.nextButton.addClass('disabled');
+    }
+  };
 
   private async createTracks(page: number): Promise<void> {
     const cars = await CarService.getCars(page);
@@ -66,6 +108,10 @@ export class GaragePage extends BaseComponent {
     );
     this.tracksContainer.appendChildren([...this.carTracks]);
   }
+
+  private updatePageTitle = () => {
+    this.pageNumber.setTextContent(`Page #${this.currentPage}`);
+  };
 
   private updateTracks(): void {
     this.tracksContainer.destroyChildren();

@@ -1,3 +1,4 @@
+
 .car-track {
   margin-top: 10px;
 }
@@ -16,9 +17,9 @@
   margin-left: 5px;
   margin-bottom: 10px;
   font-size: 14px;
-  color: #dd0a06;
-  background: rgb(222, 223, 231);
-  border: none;
+  color: #c8dd06;
+  background: rgba(23, 23, 25, 0.9);
+  border: 1px solid rgb(222, 223, 231);
   user-select: none;
   cursor: pointer;
 }
@@ -28,7 +29,7 @@
 }
 
 .track-button.disabled {
-  background: rgb(222, 223, 231, 0.5);
+  background: rgb(222, 223, 231, 0.3);
   pointer-events: none;
 }
 
