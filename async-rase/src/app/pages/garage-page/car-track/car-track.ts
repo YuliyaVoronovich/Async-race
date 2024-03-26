@@ -8,8 +8,8 @@ type CarTrackType = {
   currentCar: ICar;
   removeCar: (id: number, track: BaseComponent) => void;
   updateCar: (car: ICar) => void;
-  startAnimateCar: (car: Car) => void;
-  stopAnimateCar: (car: Car) => void;
+  startAnimateCar: (buttonStart: Button, buttonStop: Button, car: Car) => void;
+  stopAnimateCar: (buttonStart: Button, buttonStop: Button, car: Car) => void;
 };
 
 export class CarTrack extends BaseComponent {
@@ -43,13 +43,14 @@ export class CarTrack extends BaseComponent {
     this.startButton = new Button({
       className: 'track-button start-button',
       textContent: 'Start',
-      onClick: () => startAnimateCar(this.car),
+      onClick: () => startAnimateCar(this.startButton, this.stopButton, this.car),
     });
     this.stopButton = new Button({
       className: 'track-button stop-button',
       textContent: 'Stop',
-      onClick: () => stopAnimateCar(this.car),
+      onClick: () => stopAnimateCar(this.startButton, this.stopButton, this.car),
     });
+    this.stopButton.addClass('disabled');
     controls.appendChildren([this.startButton, this.stopButton]);
     this.appendChildren([this.updateButton, this.deleteButton, controls, this.car]);
   }

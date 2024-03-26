@@ -26,6 +26,7 @@
     "curly": ["error", "all"],
     "max-lines-per-function": ["error", { "max": 40, "skipBlankLines": true, "skipComments": true }],
     "@typescript-eslint/no-inferrable-types": "error",
+    "@typescript-eslint/no-misused-promises": "warn",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/explicit-member-accessibility": [
       "error",

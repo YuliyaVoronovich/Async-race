@@ -108,7 +108,9 @@ export class GaragePage extends BaseComponent {
     this.form.fullDataOfCar(car);
   };
 
-  private startAnimateCar = async (car: Car): Promise<void> => {
+  private startAnimateCar = async (buttonStart: Button, buttonStop: Button, car: Car): Promise<void> => {
+    buttonStart.addClass('disabled');
+    buttonStop.removeClass('disabled');
     const { distance, velocity } = await chooseEngine(car.idcar, DriveStatus.started);
     car.startAnimation(`${distance / velocity}ms`);
     startDrive(car.idcar)
@@ -122,7 +124,9 @@ export class GaragePage extends BaseComponent {
       });
   };
 
-  private stopAnimateCar = async (car: Car): Promise<void> => {
+  private stopAnimateCar = async (buttonStart: Button, buttonStop: Button, car: Car): Promise<void> => {
+    buttonStart.removeClass('disabled');
+    buttonStop.addClass('disabled');
     await chooseEngine(car.idcar, DriveStatus.stopped);
     car.stopAnimation();
   };

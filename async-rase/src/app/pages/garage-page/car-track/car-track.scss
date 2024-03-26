@@ -14,8 +14,22 @@
   width: 40px;
   height: 20px;
   margin-left: 5px;
-  font-size: 16px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #dd0a06;
+  background: rgb(222, 223, 231);
+  border: none;
+  user-select: none;
   cursor: pointer;
+}
+
+.track-button:hover {
+  scale: 0.9;
+}
+
+.track-button.disabled {
+  background: rgb(222, 223, 231, 0.5);
+  pointer-events: none;
 }
 
 .controls {
