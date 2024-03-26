@@ -2,6 +2,7 @@ import './create-form.scss';
 import type { ICar } from 'src/app/interfaces/car';
 import { BaseComponent } from '../base-component';
 import { Input } from '../input/input';
+import { Button } from '../button/button';
 
 export class CreateForm extends BaseComponent {
   private readonly color = new Input({ type: 'color', classNameInput: 'form-input-color' });
@@ -23,13 +24,19 @@ export class CreateForm extends BaseComponent {
     name: 'Name',
   });
 
-  private readonly update = new Input({ type: 'button', classNameInput: 'form-input-button', value: 'Update' });
+  private readonly update = new Button({ className: 'form-input-button', textContent: 'Update' });
+
+  private readonly randomGenerate = new Button({
+    className: 'form-input-button random-button',
+    textContent: 'Generate random car',
+  });
 
   private idCar = 0;
 
   constructor(
     private onSubmit?: (name: string, color: string) => void,
     private onUpdate?: (id: number, name: string, color: string) => void,
+    private onRandome?: () => void,
   ) {
     super({ tagName: 'form', className: 'create-form' });
     this.setAttribute('action', '');
@@ -38,7 +45,7 @@ export class CreateForm extends BaseComponent {
     const inputsWrapperUpdate = new BaseComponent({ tagName: 'div', className: 'form-input-wrapper' });
     inputsWrapper.appendChildren([this.carName, this.color, this.submit]);
     inputsWrapperUpdate.appendChildren([this.carNameUpdate, this.colorUpdate, this.update]);
-    this.appendChildren([inputsWrapper, inputsWrapperUpdate]);
+    this.appendChildren([inputsWrapper, inputsWrapperUpdate, this.randomGenerate]);
 
     this.submit.addListener('click', (e: Event) => {
       e.preventDefault();
@@ -54,6 +61,11 @@ export class CreateForm extends BaseComponent {
       const color = this.colorUpdate.getValue();
       this.onUpdate?.(this.idCar, name, color);
       this.resetForm();
+    });
+
+    this.randomGenerate.addListener('click', (e: Event) => {
+      e.preventDefault();
+      this.onRandome?.();
     });
   }
 

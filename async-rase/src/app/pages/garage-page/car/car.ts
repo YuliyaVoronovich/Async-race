@@ -30,7 +30,7 @@ export class Car extends BaseComponent {
     this.carImage.setStyle('animation', `move`);
     this.carImage.setStyle('animation-duration', duration);
     this.carImage.setStyle('animation-play-state', 'running');
-    this.carImage.setStyle('animation-fill-mode', 'forwards');
+    this.carImage.setStyle('animation-fill-mode', 'both');
   }
 
   public stopAnimation(): void {
@@ -38,7 +38,6 @@ export class Car extends BaseComponent {
   }
 
   public pauseAnimation(): void {
-    this.carImage.deleteStyle('animation-play-state');
     this.carImage.setStyle('animation-play-state', 'paused');
   }
 }

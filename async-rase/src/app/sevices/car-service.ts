@@ -1,11 +1,14 @@
 import { createCar, getCars, removeCar, updateCar } from '../../api/car-api';
 import type { ICar } from '../interfaces/car';
 import Observable from '../utils/observable';
+import { getRandomName, getRandomColor } from '../utils/random-generate';
 
 class Car {
   private readonly carCountStart = 0;
 
   private readonly countIncrement = 1;
+
+  private readonly countCarsForRandom = 100;
 
   public readonly carsCount = new Observable<number>(this.carCountStart);
 
@@ -25,6 +28,15 @@ class Car {
         this.carsCount.notify((value) => value + this.countIncrement);
       })
       .catch(() => {});
+  }
+
+  public async createCars(): Promise<void> {
+    const requests = Array.from({ length: this.countCarsForRandom }, () =>
+      createCar({ name: getRandomName(), color: getRandomColor() }),
+    );
+    return Promise.all(requests).then(() => {
+      this.carsCount.notify((val) => val + this.countCarsForRandom);
+    });
   }
 
   public async removeCar(id: number): Promise<void> {

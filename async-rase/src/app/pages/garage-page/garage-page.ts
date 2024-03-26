@@ -36,7 +36,7 @@ export class GaragePage extends BaseComponent {
     super({ tagName: 'div', className: 'garage-wrapper' });
     const controlsWrapper = new BaseComponent({ tagName: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
-    this.form = new CreateForm(this.getFormData, this.getFormDataUpdate);
+    this.form = new CreateForm(this.getFormData, this.getFormDataUpdate, this.randomGenerateCars);
     this.onCarsCountChange = (count: number) => {
       this.header.setTextContent(`Garage (${count})`);
     };
@@ -90,6 +90,12 @@ export class GaragePage extends BaseComponent {
       .catch(() => {});
   };
 
+  private randomGenerateCars = async (): Promise<void> => {
+    return CarService.createCars().then(() => {
+      return this.updateTracks();
+    });
+  };
+
   private removeCar = (id: number, track: BaseComponent): void => {
     CarService.removeCar(id)
       .then(() => {
@@ -107,12 +113,13 @@ export class GaragePage extends BaseComponent {
     car.startAnimation(`${distance / velocity}ms`);
     startDrive(car.idcar)
       .then((res) => {
-        console.log(res);
         if (!res.success) {
           car.pauseAnimation();
         }
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        return error;
+      });
   };
 
   private stopAnimateCar = async (car: Car): Promise<void> => {

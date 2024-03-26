@@ -1,5 +1,5 @@
 import type { CarResponse, ICar } from '../app/interfaces/car';
-import { PAGE_LIMIT_ITMES_GARAGE, baseUrl } from '../app/constants';
+import { PAGE_LIMIT_GARAGE, baseUrl } from '../app/constants';
 
 async function request(
   endpoint: string,
@@ -29,7 +29,7 @@ async function request(
   });
 }
 
-export function getCars(page: number, limit = PAGE_LIMIT_ITMES_GARAGE) {
+export function getCars(page: number, limit = PAGE_LIMIT_GARAGE) {
   return request(`garage?_page=${page}&_limit=${limit}`);
 }
 
@@ -45,10 +45,10 @@ export function removeCar(id: number) {
   return request(`garage/${id}`, { method: 'DELETE' });
 }
 
-export function updateCar(id: number, update: { name: string; color: string }) {
+export function updateCar(id: number, body: { name: string; color: string }) {
   return request(`garage/${id}`, {
+    body,
     method: 'PUT',
-    body: update,
   });
 }
 

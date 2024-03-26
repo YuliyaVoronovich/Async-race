@@ -28,10 +28,15 @@
 }
 
 .form-input-button {
-  width: 80px;
+  width: 100px;
   padding: 5px;
   font-size: 16px;
   border-radius: 5px;
   color: #deddf6;
   background: rgb(34, 44, 134);
+  cursor: pointer;
+}
+
+.random-button {
+  width: 100%;
 }
