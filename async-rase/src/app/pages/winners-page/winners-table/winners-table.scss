@@ -1,0 +1,23 @@
+.table {
+  margin-top: 30px;
+  padding: 5px 10px;
+  font-size: 16px;
+  background: rgba(23, 23, 25, 0.9);
+  border: 1px solid rgb(222, 223, 231);
+  text-align: center;
+  border-collapse: collapse;
+  color: #c8dd06;
+}
+
+.thead {
+  padding: 8px 10px;
+  font-weight: normal;
+  border-bottom: 2px solid rgb(222, 223, 231);
+  cursor: pointer;
+}
+
+.table-cell {
+  padding: 8px;
+  text-align: center;
+  color: rgb(222, 223, 231);;
+}

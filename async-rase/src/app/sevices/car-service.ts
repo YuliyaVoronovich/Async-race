@@ -1,4 +1,4 @@
-import { createCar, getCars, removeCar, updateCar } from '../../api/car-api';
+import { createCar, getCars, removeCar, updateCar, getCar } from '../../api/car-api';
 import type { ICar } from '../interfaces/car';
 import Observable from '../utils/observable';
 import { getRandomName, getRandomColor } from '../utils/random-generate';
@@ -16,6 +16,11 @@ class Car {
     const cars = await getCars(page);
     this.carsCount.notify(Number(cars.count));
     return cars.items;
+  }
+
+  public async getCar(page: number): Promise<ICar> {
+    const car = await getCar(page);
+    return car;
   }
 
   public getCarsCount(): number {

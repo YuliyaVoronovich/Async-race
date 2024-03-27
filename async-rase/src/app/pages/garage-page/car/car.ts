@@ -26,6 +26,14 @@ export class Car extends BaseComponent {
     return this.id;
   }
 
+  public getName(): BaseComponent {
+    return this.carName;
+  }
+
+  public getColor(): BaseComponent {
+    return this.carImage;
+  }
+
   public startAnimation(duration: string): void {
     this.carImage.setStyle('animation', `move`);
     this.carImage.setStyle('animation-duration', duration);

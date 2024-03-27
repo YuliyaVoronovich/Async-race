@@ -1,4 +1,5 @@
 import './garage-page.scss';
+import '../page.scss';
 import { chooseEngine, startDrive } from '../../../api/engine-api';
 import { CarService } from '../../sevices/car-service';
 import { BaseComponent } from '../../components/base-component';
@@ -89,9 +90,7 @@ export class GaragePage extends BaseComponent {
   }
 
   private checkNextButton = () => {
-    if (this.currentPage === this.countPages) {
-      this.nextButton.addClass('disabled');
-    }
+    this.nextButton.toggleClass('disabled', this.currentPage === this.countPages);
   };
 
   private async createTracks(page: number): Promise<void> {
@@ -118,6 +117,7 @@ export class GaragePage extends BaseComponent {
     this.createTracks(this.currentPage)
       .then(() => {})
       .catch(() => {});
+    this.checkNextButton();
   }
 
   private getFormData = (name: string, color: string) => {
