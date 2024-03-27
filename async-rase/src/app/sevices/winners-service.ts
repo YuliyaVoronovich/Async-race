@@ -31,6 +31,14 @@ class Winners {
   public getWinnersCount(): number {
     return this.winnersCount.getValue();
   }
+
+  public async removeWinner(id: number): Promise<void> {
+    return removeWinner(id)
+      .then(() => {
+        this.winnersCount.notify((value) => value - this.countIncrement);
+      })
+      .catch(() => {});
+  }
 }
 
 export const WinnersService = new Winners();

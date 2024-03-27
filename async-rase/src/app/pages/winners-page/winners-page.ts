@@ -45,7 +45,6 @@ export class WinnersPage extends BaseComponent {
 
   private async createWinners(page: number): Promise<void> {
     const winners = await WinnersService.getWinners(page);
-    console.log(winners);
     const winnersRows = winners.map((win) => new WinnersTableRow(win.name, win.color, win.wins, win.time));
     this.winnersTable.bodyNode.appendChildren([...winnersRows]);
   }

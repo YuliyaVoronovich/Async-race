@@ -1,5 +1,6 @@
 import './garage-page.scss';
 import '../page.scss';
+import { WinnersService } from '../../sevices/winners-service';
 import { chooseEngine, startDrive } from '../../../api/engine-api';
 import { CarService } from '../../sevices/car-service';
 import { BaseComponent } from '../../components/base-component';
@@ -146,6 +147,9 @@ export class GaragePage extends BaseComponent {
     CarService.removeCar(id)
       .then(() => {
         track.destroy();
+        WinnersService.removeWinner(id)
+          .then(() => {})
+          .catch(() => {});
       })
       .catch(() => {});
   };
