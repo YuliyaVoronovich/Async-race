@@ -14,7 +14,12 @@ html {
 }
 
 body {
-  font-family: Chelsea Market, Verdana, Geneva, Tahoma, sans-serif;;
+  font-family:
+    Chelsea Market,
+    Verdana,
+    Geneva,
+    Tahoma,
+    sans-serif;
   font-size: 16px;
   font-weight: 400;
   color: #deddf6;
@@ -22,17 +27,17 @@ body {
 .container {
   width: 100%;
   min-height: 100vh;
-  background: url('./app/assets/images/page_garage.jpg');
+  background: url('./app/assets/images/garage.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
-main {
+.main {
   display: flex;
   flex-direction: row;
 
-  min-height:  100vh;
+  min-height: 100vh;
 }
 
 aside {
@@ -46,4 +51,20 @@ aside {
 .page-section {
   width: 100%;
   margin-left: 10px;
+}
+
+@media (max-width: 800px) {
+  aside {
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .main {
+    flex-direction: column;
+  }
+
+  .page-section {
+
+    margin-left: 0;
+  }
 }

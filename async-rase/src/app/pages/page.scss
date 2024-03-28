@@ -16,6 +16,12 @@
   margin: 10px 0 10px 30px;
 }
 
+@media (max-width: 800px) {
+  .wrapper {
+    flex-direction: column;
+  }
+}
+
 .control-race-wrapper {
   margin-left: 10px;
 }

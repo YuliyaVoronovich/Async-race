@@ -1,5 +1,5 @@
 import { getCar } from '../../api/car-api';
-import { createWinner, getWinners, removeWinner, updateWinner } from '../../api/winner-api';
+import { getWinners, removeWinner } from '../../api/winner-api';
 import type { IWinner } from '../interfaces/winner';
 import Observable from '../utils/observable';
 import type { ICar } from '../interfaces/car';

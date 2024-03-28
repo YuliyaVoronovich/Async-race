@@ -12,6 +12,17 @@
     margin-left: 0;
   }
   to {
-    margin-left: 95%;
+    margin-left: 90%;
+  }
+}
+
+@media (max-width: 800px) {
+  @keyframes move {
+    from {
+      margin-left: 0;
+    }
+    to {
+      margin-left: 85%;
+    }
   }
 }

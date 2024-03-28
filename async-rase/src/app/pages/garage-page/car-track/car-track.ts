@@ -8,8 +8,8 @@ type CarTrackType = {
   currentCar: ICar;
   removeCar: (id: number, track: BaseComponent) => void;
   updateCar: (car: ICar) => void;
-  startAnimateCar: (buttonStart: Button, buttonStop: Button, car: Car) => void;
-  stopAnimateCar: (buttonStart: Button, buttonStop: Button, car: Car) => void;
+  startAnimateCar: (car: Car, buttonStart?: Button, buttonStop?: Button) => Promise<{ id: number; time: number }>;
+  stopAnimateCar: (car: Car, buttonStart?: Button, buttonStop?: Button) => void;
 };
 
 export class CarTrack extends BaseComponent {
@@ -43,15 +43,19 @@ export class CarTrack extends BaseComponent {
     this.startButton = new Button({
       className: 'track-button start-button',
       textContent: 'Start',
-      onClick: () => startAnimateCar(this.startButton, this.stopButton, this.car),
+      onClick: () => startAnimateCar(this.car, this.startButton, this.stopButton),
     });
     this.stopButton = new Button({
       className: 'track-button stop-button',
       textContent: 'Stop',
-      onClick: () => stopAnimateCar(this.startButton, this.stopButton, this.car),
+      onClick: () => stopAnimateCar(this.car, this.startButton, this.stopButton),
     });
     this.stopButton.addClass('disabled');
     controls.appendChildren([this.startButton, this.stopButton]);
     this.appendChildren([this.updateButton, this.deleteButton, controls, this.car]);
+  }
+
+  public get carTrack() {
+    return this.car;
   }
 }

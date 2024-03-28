@@ -44,6 +44,8 @@ export class GaragePage extends BaseComponent {
 
   private readonly onCarsCountChange: (count: number) => void;
 
+  private isStop = false;
+
   constructor() {
     super({ tagName: 'div', className: 'garage-wrapper' });
     this.prevButton.addClass('disabled');
@@ -66,10 +68,16 @@ export class GaragePage extends BaseComponent {
     this.createTracks(this.currentPage)
       .then(() => {})
       .catch(() => {});
-
     CarService.carsCount.subscribe(this.onCarsCountChange);
     this.appendChildren([this.header, controlsWrapper, wrapper, this.tracksContainer]);
 
+    this.nextPage();
+    this.prevPage();
+    this.startAllCars();
+    this.stopAllCars();
+  }
+
+  private nextPage = () => {
     this.nextButton.addListener('click', (e: Event) => {
       e.preventDefault();
       this.checkNextButton();
@@ -78,6 +86,9 @@ export class GaragePage extends BaseComponent {
       this.updatePageTitle();
       this.updateTracks();
     });
+  };
+
+  private prevPage = () => {
     this.prevButton.addListener('click', (e: Event) => {
       e.preventDefault();
       if (this.currentPage === START_PAGE + 1) {
@@ -88,7 +99,27 @@ export class GaragePage extends BaseComponent {
       this.updatePageTitle();
       this.updateTracks();
     });
-  }
+  };
+
+  private startAllCars = (): void => {
+    this.raceAll.addListener('click', (e: Event) => {
+      e.preventDefault();
+      Promise.any(this.carTracks.map((item) => this.startAnimateCar(item.carTrack, this.raceAll, this.resetAll)))
+        .then((res) => {
+          console.log(res);
+        })
+        .catch(() => {});
+    });
+  };
+
+  private stopAllCars = (): void => {
+    this.resetAll.addListener('click', (e: Event) => {
+      e.preventDefault();
+      Promise.all(this.carTracks.map((item) => this.stopAnimateCar(item.carTrack, this.raceAll, this.resetAll)))
+        .then(() => {})
+        .catch(() => {});
+    });
+  };
 
   private checkNextButton = () => {
     this.nextButton.toggleClass('disabled', this.currentPage === this.countPages);
@@ -137,10 +168,12 @@ export class GaragePage extends BaseComponent {
       .catch(() => {});
   };
 
-  private randomGenerateCars = async (): Promise<void> => {
-    return CarService.createCars().then(() => {
-      return this.updateTracks();
-    });
+  private randomGenerateCars = (): void => {
+    CarService.createCars()
+      .then(() => {
+        this.updateTracks();
+      })
+      .catch(() => {});
   };
 
   private removeCar = (id: number, track: BaseComponent): void => {
@@ -158,25 +191,36 @@ export class GaragePage extends BaseComponent {
     this.form.fullDataOfCar(car);
   };
 
-  private startAnimateCar = async (buttonStart: Button, buttonStop: Button, car: Car): Promise<void> => {
-    buttonStart.addClass('disabled');
-    buttonStop.removeClass('disabled');
+  private startAnimateCar = async (
+    car: Car,
+    buttonStart?: Button,
+    buttonStop?: Button,
+  ): Promise<{ id: number; time: number }> => {
+    buttonStart?.addClass('disabled');
+    buttonStop?.removeClass('disabled');
     const { distance, velocity } = await chooseEngine(car.idcar, DriveStatus.started);
     car.startAnimation(`${distance / velocity}ms`);
-    startDrive(car.idcar)
-      .then((res) => {
-        if (!res.success) {
-          car.pauseAnimation();
-        }
-      })
-      .catch((error: Error) => {
-        return error;
-      });
+    return new Promise((resolve) => {
+      startDrive(car.idcar)
+        .then((res) => {
+          if (res.success) {
+            resolve({
+              id: car.idcar,
+              time: distance / velocity,
+            });
+          } else {
+            car.pauseAnimation();
+          }
+        })
+        .catch((error: string) => {
+          throw new Error(error);
+        });
+    });
   };
 
-  private stopAnimateCar = async (buttonStart: Button, buttonStop: Button, car: Car): Promise<void> => {
-    buttonStart.removeClass('disabled');
-    buttonStop.addClass('disabled');
+  private stopAnimateCar = async (car: Car, buttonStart?: Button, buttonStop?: Button): Promise<void> => {
+    buttonStart?.removeClass('disabled');
+    buttonStop?.addClass('disabled');
     await chooseEngine(car.idcar, DriveStatus.stopped);
     car.stopAnimation();
   };
