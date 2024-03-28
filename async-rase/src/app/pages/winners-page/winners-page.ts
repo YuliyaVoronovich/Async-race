@@ -6,7 +6,7 @@ import { BaseComponent } from '../../components/base-component';
 import { WinnersTable } from './winners-table/winners-table';
 import { WinnersTableRow } from './winners-table-row/winners-table-row';
 
-export class WinnersPage extends BaseComponent {
+class WinnersPage extends BaseComponent {
   private currentPage = 1;
 
   private countPages = 1;
@@ -51,7 +51,6 @@ export class WinnersPage extends BaseComponent {
 
   private async createWinners(): Promise<void> {
     const winners = await WinnersService.getWinners(this.currentPage);
-    console.log(this.currentPage);
     this.winnersRows = winners.map(
       (win, index) =>
         new WinnersTableRow(
@@ -105,3 +104,5 @@ export class WinnersPage extends BaseComponent {
     });
   };
 }
+
+export const WinnersPageInstanse = new WinnersPage();

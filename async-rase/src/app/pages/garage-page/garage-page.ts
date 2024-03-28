@@ -17,7 +17,7 @@ enum DriveStatus {
   stopped = 'stopped',
   drive = 'drive',
 }
-export class GaragePage extends BaseComponent {
+class GaragePage extends BaseComponent {
   private currentPage = 1;
 
   private countPages = 1;
@@ -241,3 +241,5 @@ export class GaragePage extends BaseComponent {
     return WinnersService.createWinner(result.id, Number(time));
   }
 }
+
+export const GaragePageInstanse = new GaragePage();

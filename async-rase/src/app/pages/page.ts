@@ -42,6 +42,7 @@ export default class Page extends BaseComponent {
   }
 
   public setContent(section: BaseComponent): void {
-    this.section.replaceChild(section);
+    this.section.setHTML('');
+    this.section.append(section);
   }
 }

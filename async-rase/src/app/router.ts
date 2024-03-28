@@ -2,9 +2,9 @@ import type { BaseComponent } from './components/base-component';
 import type Page from './pages/page';
 
 const mapRoutes = {
-  '': () => import('./pages/garage-page/garage-page').then((item) => item.GaragePage),
-  garage: () => import('./pages/garage-page/garage-page').then((item) => item.GaragePage),
-  winners: () => import('./pages/winners-page/winners-page').then((item) => item.WinnersPage),
+  '': () => import('./pages/garage-page/garage-page').then((item) => item.GaragePageInstanse),
+  garage: () => import('./pages/garage-page/garage-page').then((item) => item.GaragePageInstanse),
+  winners: () => import('./pages/winners-page/winners-page').then((item) => item.WinnersPageInstanse),
 };
 
 type Route = keyof typeof mapRoutes;
@@ -35,6 +35,6 @@ export default class Router {
 
   private setViewContent = async (location: keyof typeof mapRoutes): Promise<BaseComponent> => {
     const Page = await mapRoutes[location]();
-    return new Page();
+    return Page;
   };
 }
