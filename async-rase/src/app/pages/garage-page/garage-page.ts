@@ -69,7 +69,7 @@ export class GaragePage extends BaseComponent {
       this.updatePageTitle();
       this.checkNextButton();
     };
-    this.createTracks(this.currentPage)
+    this.createTracks()
       .then(() => {})
       .catch(() => {});
     CarService.carsCount.subscribe(this.onCarsCountChange);
@@ -111,7 +111,7 @@ export class GaragePage extends BaseComponent {
       Promise.any(this.carTracks.map((item) => this.startAnimateCar(item.carTrack, this.raceAll)))
         .then((result) => {
           this.resetAll.removeClass('disabled');
-          this.setWinner(result);
+          this.setWinner(result).catch(() => {});
         })
         .catch(() => {
           // this.resetAll.removeClass('disabled');
@@ -132,8 +132,8 @@ export class GaragePage extends BaseComponent {
     this.nextButton.toggleClass('disabled', this.currentPage === this.countPages);
   };
 
-  private async createTracks(page: number): Promise<void> {
-    const cars = await CarService.getCars(page);
+  private async createTracks(): Promise<void> {
+    const cars = await CarService.getCars(this.currentPage);
     this.carTracks = cars.map(
       (car) =>
         new CarTrack({
@@ -153,7 +153,7 @@ export class GaragePage extends BaseComponent {
 
   private updateTracks(): void {
     this.tracksContainer.destroyChildren();
-    this.createTracks(this.currentPage)
+    this.createTracks()
       .then(() => {})
       .catch(() => {});
     this.checkNextButton();
