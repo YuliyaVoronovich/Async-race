@@ -10,6 +10,7 @@ import { Button } from '../../components/button/button';
 import type { ICar } from '../../interfaces/car';
 import type { Car } from './car/car';
 import { PAGE_LIMIT_GARAGE, START_PAGE } from '../../constants';
+import { Modal } from '../../components/modal/modal';
 
 enum DriveStatus {
   started = 'started',
@@ -40,15 +41,18 @@ export class GaragePage extends BaseComponent {
 
   private readonly raceAll = new Button({ className: 'control-button start-button', textContent: 'Start All' });
 
-  private readonly resetAll = new Button({ className: 'control-button stop-button', textContent: 'Stop All' });
+  private readonly resetAll = new Button({ className: 'control-button stop-button', textContent: 'Reset All' });
 
   private readonly onCarsCountChange: (count: number) => void;
 
   private isStop = false;
 
+  private readonly modal = new Modal();
+
   constructor() {
     super({ tagName: 'div', className: 'garage-wrapper' });
     this.prevButton.addClass('disabled');
+    this.resetAll.addClass('disabled');
 
     const controlsWrapper = new BaseComponent({ tagName: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
@@ -69,7 +73,7 @@ export class GaragePage extends BaseComponent {
       .then(() => {})
       .catch(() => {});
     CarService.carsCount.subscribe(this.onCarsCountChange);
-    this.appendChildren([this.header, controlsWrapper, wrapper, this.tracksContainer]);
+    this.appendChildren([this.header, controlsWrapper, wrapper, this.tracksContainer, this.modal]);
 
     this.nextPage();
     this.prevPage();
@@ -104,11 +108,14 @@ export class GaragePage extends BaseComponent {
   private startAllCars = (): void => {
     this.raceAll.addListener('click', (e: Event) => {
       e.preventDefault();
-      Promise.any(this.carTracks.map((item) => this.startAnimateCar(item.carTrack, this.raceAll, this.resetAll)))
-        .then((res) => {
-          console.log(res);
+      Promise.any(this.carTracks.map((item) => this.startAnimateCar(item.carTrack, this.raceAll)))
+        .then((result) => {
+          this.resetAll.removeClass('disabled');
+          this.setWinner(result);
         })
-        .catch(() => {});
+        .catch(() => {
+          // this.resetAll.removeClass('disabled');
+        });
     });
   };
 
@@ -195,17 +202,18 @@ export class GaragePage extends BaseComponent {
     car: Car,
     buttonStart?: Button,
     buttonStop?: Button,
-  ): Promise<{ id: number; time: number }> => {
+  ): Promise<{ id: number; name: string; time: number }> => {
     buttonStart?.addClass('disabled');
     buttonStop?.removeClass('disabled');
-    const { distance, velocity } = await chooseEngine(car.idcar, DriveStatus.started);
+    const { distance, velocity } = await chooseEngine(car.idCar, DriveStatus.started);
     car.startAnimation(`${distance / velocity}ms`);
     return new Promise((resolve) => {
-      startDrive(car.idcar)
+      startDrive(car.idCar)
         .then((res) => {
           if (res.success) {
             resolve({
-              id: car.idcar,
+              id: car.idCar,
+              name: car.nameCar,
               time: distance / velocity,
             });
           } else {
@@ -221,7 +229,15 @@ export class GaragePage extends BaseComponent {
   private stopAnimateCar = async (car: Car, buttonStart?: Button, buttonStop?: Button): Promise<void> => {
     buttonStart?.removeClass('disabled');
     buttonStop?.addClass('disabled');
-    await chooseEngine(car.idcar, DriveStatus.stopped);
+    await chooseEngine(car.idCar, DriveStatus.stopped);
     car.stopAnimation();
   };
+
+  private setWinner(result: { id: number; name: string; time: number }) {
+    const time = (result.time / 1000).toFixed(2);
+    this.modal.content = `Первым пришёл водитель ${result.name}. Время ${time} s`;
+    this.modal.toggleModal();
+
+    return WinnersService.createWinner(result.id, Number(time));
+  }
 }

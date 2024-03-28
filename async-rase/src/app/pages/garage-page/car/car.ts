@@ -8,11 +8,14 @@ export class Car extends BaseComponent {
 
   private id: number;
 
+  private name: string;
+
   private readonly carImage: BaseComponent;
 
   constructor(car: ICar) {
     super({ tagName: 'div', className: 'car-wrapper-container' });
     this.id = car.id;
+    this.name = car.name;
     const carWrapper = new BaseComponent({ tagName: 'div', className: 'car-wrapper' });
     this.carName = new BaseComponent({ tagName: 'span', className: 'car-name', textContent: car.name });
     this.carImage = new BaseComponent({ tagName: 'div', className: 'car-image' });
@@ -22,8 +25,12 @@ export class Car extends BaseComponent {
     this.appendChildren([carWrapper]);
   }
 
-  public get idcar() {
+  public get idCar() {
     return this.id;
+  }
+
+  public get nameCar() {
+    return this.name;
   }
 
   public startAnimation(duration: string): void {

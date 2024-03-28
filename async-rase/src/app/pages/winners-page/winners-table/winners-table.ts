@@ -10,8 +10,6 @@ const headers = [
 ];
 
 export class WinnersTable extends BaseComponent {
-  private winnersRows: BaseComponent[] = [];
-
   private body = new BaseComponent({ tagName: 'tbody' });
 
   constructor() {

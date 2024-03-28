@@ -33,21 +33,22 @@ export function getWinners(page: number, limit = PAGE_LIMIT_WINNERS) {
   return request(`winners?_page=${page}&_limit=${limit}`);
 }
 
-export function createWinner(body: { name: string; color: string }) {
+export function createWinner(body: { id: number; time: number; wins: number }) {
   return request('winners', { body, method: 'POST' });
-}
-
-export function getWinner(id: number) {
-  return request(`winners/${id}`, { method: 'GET' });
 }
 
 export function removeWinner(id: number) {
   return request(`winners/${id}`, { method: 'DELETE' });
 }
 
-export function updateWinner(id: number, body: { name: string; color: string }) {
+export function updateWinner(id: number, body: { time: number; wins: number }) {
   return request(`winners/${id}`, {
     body,
     method: 'PUT',
   });
+}
+
+export async function getWinner(id: number): Promise<IWinner> {
+  const response = await fetch(`${baseUrl}/winners/${id}`);
+  return response.json() as Promise<IWinner>;
 }

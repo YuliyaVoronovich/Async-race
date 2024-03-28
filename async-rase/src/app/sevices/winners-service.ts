@@ -1,5 +1,5 @@
 import { getCar } from '../../api/car-api';
-import { getWinners, removeWinner } from '../../api/winner-api';
+import { getWinners, removeWinner, getWinner, createWinner, updateWinner } from '../../api/winner-api';
 import type { IWinner } from '../interfaces/winner';
 import Observable from '../utils/observable';
 import type { ICar } from '../interfaces/car';
@@ -38,6 +38,23 @@ class Winners {
         this.winnersCount.notify((value) => value - this.countIncrement);
       })
       .catch(() => {});
+  }
+
+  public async getWinner(page: number): Promise<IWinner> {
+    const winner = await getWinner(page);
+    return winner;
+  }
+
+  public async createWinner(idCar: number, time: number): Promise<void> {
+    const result = await getWinner(idCar);
+    if (result.id == null) {
+      await createWinner({ id: idCar, wins: 1, time });
+    } else {
+      await updateWinner(idCar, {
+        wins: (result.wins += 1),
+        time: result.time > time ? time : result.time,
+      });
+    }
   }
 }
 

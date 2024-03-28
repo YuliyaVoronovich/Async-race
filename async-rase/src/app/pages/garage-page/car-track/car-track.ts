@@ -8,7 +8,11 @@ type CarTrackType = {
   currentCar: ICar;
   removeCar: (id: number, track: BaseComponent) => void;
   updateCar: (car: ICar) => void;
-  startAnimateCar: (car: Car, buttonStart?: Button, buttonStop?: Button) => Promise<{ id: number; time: number }>;
+  startAnimateCar: (
+    car: Car,
+    buttonStart?: Button,
+    buttonStop?: Button,
+  ) => Promise<{ id: number; name: string; time: number }>;
   stopAnimateCar: (car: Car, buttonStart?: Button, buttonStop?: Button) => void;
 };
 
