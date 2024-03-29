@@ -17,6 +17,8 @@ enum DriveStatus {
   stopped = 'stopped',
   drive = 'drive',
 }
+const countDecimalPlaces = 2;
+
 class GaragePage extends BaseComponent {
   private currentPage = 1;
 
@@ -116,7 +118,7 @@ class GaragePage extends BaseComponent {
           this.setWinner(result).catch(() => {});
         })
         .catch(() => {
-          // this.resetAll.removeClass('disabled');
+          this.resetAll.removeClass('disabled');
         });
     });
   };
@@ -236,7 +238,7 @@ class GaragePage extends BaseComponent {
   };
 
   private setWinner(result: { id: number; name: string; time: number }) {
-    const time = (result.time / this.countMsInSeconds).toFixed(2);
+    const time = (result.time / this.countMsInSeconds).toFixed(countDecimalPlaces);
     this.modal.content = `Первым пришёл водитель ${result.name}. Время ${time} s`;
     this.modal.toggleModal();
 

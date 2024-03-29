@@ -1,16 +1,3 @@
-// export function isNotNullable<T>(value: T): value is NonNullable<T> {
-//   return value != null;
-// }
-
-// export type Props<T extends HTMLElement = HTMLElement> = Partial<
-//   Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName'>
-// > & {
-//   txt?: string;
-//   tag?: keyof HTMLElementTagNameMap;
-// };
-
-// export type PossibleChild = HTMLElement | BaseComponent | null;
-
 export class BaseComponent {
   protected node: HTMLElement;
 

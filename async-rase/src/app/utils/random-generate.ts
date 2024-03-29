@@ -1,3 +1,7 @@
+const NUMERIC_HEXADECIMAL = 16;
+const subStrStart = 2;
+const subStrFinish = 8;
+
 const nameCar = [
   'Suzuki',
   'BMW',
@@ -21,5 +25,5 @@ export function getRandomName(): string {
 }
 
 export function getRandomColor(): string {
-  return `#${`${Math.random().toString(16)}000000`.substring(2, 8)}`;
+  return `#${`${Math.random().toString(NUMERIC_HEXADECIMAL)}000000`.substring(subStrStart, subStrFinish)}`;
 }
