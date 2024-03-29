@@ -19,8 +19,8 @@ enum DriveStatus {
 }
 const countDecimalPlaces = 2;
 
-class GaragePage extends BaseComponent {
-  private currentPage = 1;
+export class GaragePage extends BaseComponent {
+  private currentPage = CarService.saveValues.currentPage;
 
   private countPages = 1;
 
@@ -51,7 +51,7 @@ class GaragePage extends BaseComponent {
 
   private readonly modal = new Modal();
 
-  private readonly countMsInSeconds = 100;
+  private readonly countMsInSeconds = 1000;
 
   constructor() {
     super({ tagName: 'div', className: 'garage-wrapper' });
@@ -71,6 +71,7 @@ class GaragePage extends BaseComponent {
       this.header.setTextContent(`Garage (${count})`);
       this.countPages = Math.ceil(count / PAGE_LIMIT_GARAGE);
       this.updatePageTitle();
+      this.checkPrevButton();
       this.checkNextButton();
     };
     this.createTracks()
@@ -91,6 +92,7 @@ class GaragePage extends BaseComponent {
       this.checkNextButton();
       this.prevButton.removeClass('disabled');
       this.currentPage += 1;
+      CarService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
       this.updateTracks();
     });
@@ -104,6 +106,7 @@ class GaragePage extends BaseComponent {
       }
       this.nextButton.removeClass('disabled');
       this.currentPage -= 1;
+      CarService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
       this.updateTracks();
     });
@@ -130,6 +133,10 @@ class GaragePage extends BaseComponent {
         .then(() => {})
         .catch(() => {});
     });
+  };
+
+  private checkPrevButton = () => {
+    this.prevButton.toggleClass('disabled', this.currentPage === START_PAGE);
   };
 
   private checkNextButton = () => {
@@ -245,5 +252,3 @@ class GaragePage extends BaseComponent {
     return WinnersService.createWinner(result.id, Number(time));
   }
 }
-
-export const GaragePageInstanse = new GaragePage();

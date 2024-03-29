@@ -6,7 +6,7 @@ interface IInput {
   name?: string;
   placeholder?: string;
   value?: string | number;
-  onInput?: (input: HTMLInputElement) => boolean;
+  onInput?: (input: string) => void;
 }
 
 export class Input extends BaseComponent {
@@ -19,7 +19,10 @@ export class Input extends BaseComponent {
     });
     this.input = this.node as HTMLInputElement;
 
-    this.addListener('change', () => onInput);
+    if (onInput) {
+      this.addListener('input', () => onInput(this.getValue()));
+    }
+
     this.setAttributes(type, name ?? '', placeholder ?? '', value ?? '');
   }
 
@@ -30,6 +33,7 @@ export class Input extends BaseComponent {
       this.setAttribute('placeholder', placeholder);
     }
     if (value) {
+      console.log(value);
       this.setAttribute('value', value.toString());
     }
   }

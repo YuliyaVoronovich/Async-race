@@ -6,8 +6,8 @@ import { BaseComponent } from '../../components/base-component';
 import { WinnersTable } from './winners-table/winners-table';
 import { WinnersTableRow } from './winners-table-row/winners-table-row';
 
-class WinnersPage extends BaseComponent {
-  private currentPage = 1;
+export class WinnersPage extends BaseComponent {
+  private currentPage = WinnersService.saveValues.currentPage;
 
   private countPages = 1;
 
@@ -30,7 +30,6 @@ class WinnersPage extends BaseComponent {
   constructor() {
     super({ tagName: 'div', className: 'winners-wrapper' });
     this.prevButton.addClass('disabled');
-
     const controlsWrapper = new BaseComponent({ tagName: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
     this.winnersTable = new WinnersTable(this.sortWinner);
@@ -40,12 +39,13 @@ class WinnersPage extends BaseComponent {
       this.header.setTextContent(`Winners (${count})`);
       this.countPages = Math.ceil(count / PAGE_LIMIT_WINNERS);
       this.updatePageTitle();
+      this.checkPrevButton();
       this.checkNextButton();
     };
 
     WinnersService.winnersCount.subscribe(this.onWinnersCountChange);
 
-    this.createWinners()
+    this.createWinners(WinnersService.saveValues.sort.field, WinnersService.saveValues.sort.order)
       .then(() => {})
       .catch(() => {});
     this.nextPage();
@@ -71,6 +71,10 @@ class WinnersPage extends BaseComponent {
     this.pageNumber.setTextContent(`Page #${this.currentPage}`);
   };
 
+  private checkPrevButton = () => {
+    this.prevButton.toggleClass('disabled', this.currentPage === START_PAGE);
+  };
+
   private checkNextButton = () => {
     this.nextButton.toggleClass('disabled', this.currentPage === this.countPages);
   };
@@ -80,6 +84,7 @@ class WinnersPage extends BaseComponent {
     this.createWinners(sort, order)
       .then(() => {})
       .catch(() => {});
+    this.checkPrevButton();
     this.checkNextButton();
   }
 
@@ -89,8 +94,9 @@ class WinnersPage extends BaseComponent {
       this.checkNextButton();
       this.prevButton.removeClass('disabled');
       this.currentPage += 1;
+      WinnersService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
-      this.updateTracks();
+      this.updateTracks(WinnersService.saveValues.sort.field, WinnersService.saveValues.sort.order);
     });
   };
 
@@ -102,15 +108,16 @@ class WinnersPage extends BaseComponent {
       }
       this.nextButton.removeClass('disabled');
       this.currentPage -= 1;
+      WinnersService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
-      this.updateTracks();
+      this.updateTracks(WinnersService.saveValues.sort.field, WinnersService.saveValues.sort.order);
     });
   };
 
-  private sortWinner = (win: string) => {
+  private sortWinner = (field: string) => {
     this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
-    this.updateTracks(win, this.sortOrder);
+    WinnersService.saveValues.sort.field = field;
+    WinnersService.saveValues.sort.order = this.sortOrder;
+    this.updateTracks(field, this.sortOrder);
   };
 }
-
-export const WinnersPageInstanse = new WinnersPage();

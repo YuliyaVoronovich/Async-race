@@ -1,3 +1,4 @@
+import type { SaveValuesWins } from 'src/types/save-values';
 import { getCar } from '../../api/car-api';
 import { getWinners, removeWinner, getWinner, createWinner, updateWinner } from '../../api/winner-api';
 import type { IWinner } from '../interfaces/winner';
@@ -5,6 +6,14 @@ import Observable from '../utils/observable';
 import type { ICar } from '../interfaces/car';
 
 class Winners {
+  public saveValues: SaveValuesWins = {
+    currentPage: 1,
+    sort: {
+      field: '',
+      order: '',
+    },
+  };
+
   private readonly winnersCountStart = 0;
 
   private readonly countIncrement = 1;

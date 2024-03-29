@@ -1,9 +1,18 @@
+import type { SaveValuesCar } from 'src/types/save-values';
 import { createCar, getCars, removeCar, updateCar, getCar } from '../../api/car-api';
 import type { ICar } from '../interfaces/car';
 import Observable from '../utils/observable';
 import { getRandomName, getRandomColor } from '../utils/random-generate';
 
 class Car {
+  public saveValues: SaveValuesCar = {
+    currentPage: 1,
+    values: {
+      name: '',
+      color: '',
+    },
+  };
+
   private readonly carCountStart = 0;
 
   private readonly countIncrement = 1;
