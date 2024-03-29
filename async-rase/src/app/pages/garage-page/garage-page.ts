@@ -49,6 +49,8 @@ class GaragePage extends BaseComponent {
 
   private readonly modal = new Modal();
 
+  private readonly countMsInSeconds = 100;
+
   constructor() {
     super({ tagName: 'div', className: 'garage-wrapper' });
     this.prevButton.addClass('disabled');
@@ -234,7 +236,7 @@ class GaragePage extends BaseComponent {
   };
 
   private setWinner(result: { id: number; name: string; time: number }) {
-    const time = (result.time / 1000).toFixed(2);
+    const time = (result.time / this.countMsInSeconds).toFixed(2);
     this.modal.content = `Первым пришёл водитель ${result.name}. Время ${time} s`;
     this.modal.toggleModal();
 

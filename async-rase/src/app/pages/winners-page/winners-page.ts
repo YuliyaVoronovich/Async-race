@@ -19,11 +19,13 @@ class WinnersPage extends BaseComponent {
 
   private readonly nextButton = new Button({ className: 'control-button next-button', textContent: 'NEXT' });
 
-  private readonly winnersTable = new WinnersTable();
+  private readonly winnersTable: WinnersTable;
 
   private readonly onWinnersCountChange: (count: number) => void;
 
   private winnersRows: WinnersTableRow[] = [];
+
+  private sortOrder = 'ASC';
 
   constructor() {
     super({ tagName: 'div', className: 'winners-wrapper' });
@@ -31,6 +33,7 @@ class WinnersPage extends BaseComponent {
 
     const controlsWrapper = new BaseComponent({ tagName: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
+    this.winnersTable = new WinnersTable(this.sortWinner);
     this.appendChildren([this.header, controlsWrapper, this.winnersTable]);
 
     this.onWinnersCountChange = (count: number) => {
@@ -49,8 +52,8 @@ class WinnersPage extends BaseComponent {
     this.prevPage();
   }
 
-  private async createWinners(): Promise<void> {
-    const winners = await WinnersService.getWinners(this.currentPage);
+  private async createWinners(sort?: string, order?: string): Promise<void> {
+    const winners = await WinnersService.getWinners(this.currentPage, sort, order);
     this.winnersRows = winners.map(
       (win, index) =>
         new WinnersTableRow(
@@ -72,9 +75,9 @@ class WinnersPage extends BaseComponent {
     this.nextButton.toggleClass('disabled', this.currentPage === this.countPages);
   };
 
-  private updateTracks(): void {
+  private updateTracks(sort?: string, order?: string): void {
     this.winnersTable.bodyNode.destroyChildren();
-    this.createWinners()
+    this.createWinners(sort, order)
       .then(() => {})
       .catch(() => {});
     this.checkNextButton();
@@ -102,6 +105,11 @@ class WinnersPage extends BaseComponent {
       this.updatePageTitle();
       this.updateTracks();
     });
+  };
+
+  private sortWinner = (win: string) => {
+    this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
+    this.updateTracks(win, this.sortOrder);
   };
 }
 

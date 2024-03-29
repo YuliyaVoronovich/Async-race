@@ -11,8 +11,8 @@ class Winners {
 
   public readonly winnersCount = new Observable<number>(this.winnersCountStart);
 
-  public async getWinners(page: number): Promise<(ICar & IWinner)[]> {
-    const winners = await getWinners(page);
+  public async getWinners(page: number, sort?: string, order?: string): Promise<(ICar & IWinner)[]> {
+    const winners = await getWinners(page, sort, order);
     this.winnersCount.notify(Number(winners.count));
     return Promise.all(
       winners.items.map(async ({ id, wins, time }: IWinner) => {

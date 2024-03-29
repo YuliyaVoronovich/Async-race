@@ -29,8 +29,8 @@ async function request(
   });
 }
 
-export function getWinners(page: number, limit = PAGE_LIMIT_WINNERS) {
-  return request(`winners?_page=${page}&_limit=${limit}`);
+export function getWinners(page: number, sort = 'id', order = 'ASC', limit = PAGE_LIMIT_WINNERS) {
+  return request(`winners?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`);
 }
 
 export function createWinner(body: { id: number; time: number; wins: number }) {
