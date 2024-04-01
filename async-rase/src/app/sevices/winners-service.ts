@@ -5,7 +5,7 @@ import type { IWinner } from '../interfaces/winner';
 import Observable from '../utils/observable';
 import type { ICar } from '../interfaces/car';
 
-class Winners {
+class WinnersService {
   public saveValues: SaveValuesWins = {
     currentPage: 1,
     sort: {
@@ -46,7 +46,9 @@ class Winners {
       .then(() => {
         this.winnersCount.notify((value) => value - this.countIncrement);
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   }
 
   public async getWinner(page: number): Promise<IWinner> {
@@ -67,4 +69,4 @@ class Winners {
   }
 }
 
-export const WinnersService = new Winners();
+export const winnersService = new WinnersService();

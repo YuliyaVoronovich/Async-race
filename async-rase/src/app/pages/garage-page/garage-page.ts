@@ -1,8 +1,8 @@
 import './garage-page.scss';
 import '../page.scss';
-import { WinnersService } from '../../sevices/winners-service';
+import { winnersService } from '../../sevices/winners-service';
 import { chooseEngine, startDrive } from '../../../api/engine-api';
-import { CarService } from '../../sevices/car-service';
+import { carService } from '../../sevices/car-service';
 import { BaseComponent } from '../../components/base-component';
 import { CreateForm } from '../../components/create-form/create-form';
 import { CarTrack } from './car-track/car-track';
@@ -20,7 +20,7 @@ enum DriveStatus {
 const countDecimalPlaces = 2;
 
 export class GaragePage extends BaseComponent {
-  private currentPage = CarService.saveValues.currentPage;
+  private currentPage = carService.saveValues.currentPage;
 
   private countPages = 1;
 
@@ -76,8 +76,10 @@ export class GaragePage extends BaseComponent {
     };
     this.createTracks()
       .then(() => {})
-      .catch(() => {});
-    CarService.carsCount.subscribe(this.onCarsCountChange);
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
+    carService.carsCount.subscribe(this.onCarsCountChange);
     this.appendChildren([this.header, controlsWrapper, wrapper, this.tracksContainer, this.modal]);
 
     this.nextPage();
@@ -92,7 +94,7 @@ export class GaragePage extends BaseComponent {
       this.checkNextButton();
       this.prevButton.removeClass('disabled');
       this.currentPage += 1;
-      CarService.saveValues.currentPage = this.currentPage;
+      carService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
       this.updateTracks();
     });
@@ -106,7 +108,7 @@ export class GaragePage extends BaseComponent {
       }
       this.nextButton.removeClass('disabled');
       this.currentPage -= 1;
-      CarService.saveValues.currentPage = this.currentPage;
+      carService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
       this.updateTracks();
     });
@@ -131,7 +133,9 @@ export class GaragePage extends BaseComponent {
       e.preventDefault();
       Promise.all(this.carTracks.map((item) => this.stopAnimateCar(item.carTrack, this.raceAll, this.resetAll)))
         .then(() => {})
-        .catch(() => {});
+        .catch((error: Error) => {
+          throw new Error(error.message);
+        });
     });
   };
 
@@ -144,7 +148,7 @@ export class GaragePage extends BaseComponent {
   };
 
   private async createTracks(): Promise<void> {
-    const cars = await CarService.getCars(this.currentPage);
+    const cars = await carService.getCars(this.currentPage);
     this.carTracks = cars.map(
       (car) =>
         new CarTrack({
@@ -166,43 +170,58 @@ export class GaragePage extends BaseComponent {
     this.tracksContainer.destroyChildren();
     this.createTracks()
       .then(() => {})
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
     this.checkNextButton();
   }
 
   private getFormData = (name: string, color: string) => {
-    CarService.createCar(name, color)
+    carService
+      .createCar(name, color)
       .then(() => {
         this.updateTracks();
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   };
 
   private getFormDataUpdate = (id: number, name: string, color: string) => {
-    CarService.updateCar(id, name, color)
+    carService
+      .updateCar(id, name, color)
       .then(() => {
         this.updateTracks();
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   };
 
   private randomGenerateCars = (): void => {
-    CarService.createCars()
+    carService
+      .createCars()
       .then(() => {
         this.updateTracks();
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   };
 
   private removeCar = (id: number, track: BaseComponent): void => {
-    CarService.removeCar(id)
+    carService
+      .removeCar(id)
       .then(() => {
         track.destroy();
-        WinnersService.removeWinner(id)
+        winnersService
+          .removeWinner(id)
           .then(() => {})
           .catch(() => {});
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   };
 
   private updateCar = (car: ICar): void => {
@@ -231,8 +250,8 @@ export class GaragePage extends BaseComponent {
             car.pauseAnimation();
           }
         })
-        .catch((error: string) => {
-          throw new Error(error);
+        .catch((error: Error) => {
+          throw new Error(error.message);
         });
     });
   };
@@ -249,6 +268,6 @@ export class GaragePage extends BaseComponent {
     this.modal.content = `Первым пришёл водитель ${result.name}. Время ${time} s`;
     this.modal.toggleModal();
 
-    return WinnersService.createWinner(result.id, Number(time));
+    return winnersService.createWinner(result.id, Number(time));
   }
 }

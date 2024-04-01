@@ -4,7 +4,7 @@ import type { ICar } from '../interfaces/car';
 import Observable from '../utils/observable';
 import { getRandomName, getRandomColor } from '../utils/random-generate';
 
-class Car {
+class CarService {
   public saveValues: SaveValuesCar = {
     currentPage: 1,
     values: {
@@ -41,7 +41,9 @@ class Car {
       .then(() => {
         this.carsCount.notify((value) => value + this.countIncrement);
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   }
 
   public async createCars(): Promise<void> {
@@ -58,14 +60,18 @@ class Car {
       .then(() => {
         this.carsCount.notify((value) => value - this.countIncrement);
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   }
 
   public async updateCar(id: number, name: string, color: string): Promise<void> {
     return updateCar(id, { name, color })
       .then(() => {})
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   }
 }
 
-export const CarService = new Car();
+export const carService = new CarService();

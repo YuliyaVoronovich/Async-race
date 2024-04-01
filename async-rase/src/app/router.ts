@@ -30,7 +30,9 @@ export default class Router {
       .then((data) => {
         this.routerOutlet.setContent(data);
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
   }
 
   private setViewContent = async (location: keyof typeof mapRoutes): Promise<BaseComponent> => {

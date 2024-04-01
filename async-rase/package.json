@@ -13,7 +13,7 @@
     "lint": "eslint --ext ts .",
     "lint:fix": "eslint --ext ts --fix .",
     "prepare": "cd .. && husky rss-puzzle/.husky",
-    "deploy": "gh-pages -d dist -e rss-puzzle"
+    "deploy": "gh-pages -d dist -e async-rase"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.3",

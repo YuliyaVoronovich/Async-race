@@ -13,7 +13,7 @@ type CarTrackType = {
     buttonStart?: Button,
     buttonStop?: Button,
   ) => Promise<{ id: number; name: string; time: number }>;
-  stopAnimateCar: (car: Car, buttonStart?: Button, buttonStop?: Button) => void;
+  stopAnimateCar: (car: Car, buttonStart?: Button, buttonStop?: Button) => Promise<void>;
 };
 
 export class CarTrack extends BaseComponent {
@@ -47,12 +47,20 @@ export class CarTrack extends BaseComponent {
     this.startButton = new Button({
       className: 'track-button start-button',
       textContent: 'Start',
-      onClick: () => startAnimateCar(this.car, this.startButton, this.stopButton),
+      onClick: () => {
+        startAnimateCar(this.car, this.startButton, this.stopButton).catch((error: Error) => {
+          throw new Error(error.message);
+        });
+      },
     });
     this.stopButton = new Button({
       className: 'track-button stop-button',
       textContent: 'Stop',
-      onClick: () => stopAnimateCar(this.car, this.startButton, this.stopButton),
+      onClick: () => {
+        stopAnimateCar(this.car, this.startButton, this.stopButton).catch((error: Error) => {
+          throw new Error(error.message);
+        });
+      },
     });
     this.stopButton.addClass('disabled');
     controls.appendChildren([this.startButton, this.stopButton]);

@@ -1,6 +1,6 @@
 import './create-form.scss';
 import type { ICar } from 'src/app/interfaces/car';
-import { CarService } from '../../sevices/car-service';
+import { carService } from '../../sevices/car-service';
 import { BaseComponent } from '../base-component';
 import { Input } from '../input/input';
 import { Button } from '../button/button';
@@ -44,13 +44,13 @@ export class CreateForm extends BaseComponent {
       classNameInput: 'form-input-name',
       name: 'Name',
       placeholder: "Input car's name",
-      value: CarService.saveValues.values.name,
+      value: carService.saveValues.values.name,
       onInput: this.inputValueName,
     });
     this.color = new Input({
       type: 'color',
       classNameInput: 'form-input-color',
-      value: CarService.saveValues.values.color,
+      value: carService.saveValues.values.color,
       onInput: this.inputValueColor,
     });
     this.resetForm();
@@ -103,10 +103,10 @@ export class CreateForm extends BaseComponent {
   }
 
   private inputValueName = (name: string) => {
-    CarService.saveValues.values.name = name;
+    carService.saveValues.values.name = name;
   };
 
   private inputValueColor = (color: string) => {
-    CarService.saveValues.values.color = color;
+    carService.saveValues.values.color = color;
   };
 }

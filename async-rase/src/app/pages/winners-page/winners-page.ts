@@ -1,5 +1,5 @@
 import '../page.scss';
-import { WinnersService } from '../../sevices/winners-service';
+import { winnersService } from '../../sevices/winners-service';
 import { PAGE_LIMIT_WINNERS, START_PAGE } from '../../constants';
 import { Button } from '../../components/button/button';
 import { BaseComponent } from '../../components/base-component';
@@ -7,7 +7,7 @@ import { WinnersTable } from './winners-table/winners-table';
 import { WinnersTableRow } from './winners-table-row/winners-table-row';
 
 export class WinnersPage extends BaseComponent {
-  private currentPage = WinnersService.saveValues.currentPage;
+  private currentPage = winnersService.saveValues.currentPage;
 
   private countPages = 1;
 
@@ -43,17 +43,19 @@ export class WinnersPage extends BaseComponent {
       this.checkNextButton();
     };
 
-    WinnersService.winnersCount.subscribe(this.onWinnersCountChange);
+    winnersService.winnersCount.subscribe(this.onWinnersCountChange);
 
-    this.createWinners(WinnersService.saveValues.sort.field, WinnersService.saveValues.sort.order)
+    this.createWinners(winnersService.saveValues.sort.field, winnersService.saveValues.sort.order)
       .then(() => {})
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
     this.nextPage();
     this.prevPage();
   }
 
   private async createWinners(sort?: string, order?: string): Promise<void> {
-    const winners = await WinnersService.getWinners(this.currentPage, sort, order);
+    const winners = await winnersService.getWinners(this.currentPage, sort, order);
     this.winnersRows = winners.map(
       (win, index) =>
         new WinnersTableRow(
@@ -83,7 +85,9 @@ export class WinnersPage extends BaseComponent {
     this.winnersTable.bodyNode.destroyChildren();
     this.createWinners(sort, order)
       .then(() => {})
-      .catch(() => {});
+      .catch((error: Error) => {
+        throw new Error(error.message);
+      });
     this.checkPrevButton();
     this.checkNextButton();
   }
@@ -94,9 +98,9 @@ export class WinnersPage extends BaseComponent {
       this.checkNextButton();
       this.prevButton.removeClass('disabled');
       this.currentPage += 1;
-      WinnersService.saveValues.currentPage = this.currentPage;
+      winnersService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
-      this.updateTracks(WinnersService.saveValues.sort.field, WinnersService.saveValues.sort.order);
+      this.updateTracks(winnersService.saveValues.sort.field, winnersService.saveValues.sort.order);
     });
   };
 
@@ -108,16 +112,16 @@ export class WinnersPage extends BaseComponent {
       }
       this.nextButton.removeClass('disabled');
       this.currentPage -= 1;
-      WinnersService.saveValues.currentPage = this.currentPage;
+      winnersService.saveValues.currentPage = this.currentPage;
       this.updatePageTitle();
-      this.updateTracks(WinnersService.saveValues.sort.field, WinnersService.saveValues.sort.order);
+      this.updateTracks(winnersService.saveValues.sort.field, winnersService.saveValues.sort.order);
     });
   };
 
   private sortWinner = (field: string) => {
     this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
-    WinnersService.saveValues.sort.field = field;
-    WinnersService.saveValues.sort.order = this.sortOrder;
+    winnersService.saveValues.sort.field = field;
+    winnersService.saveValues.sort.order = this.sortOrder;
     this.updateTracks(field, this.sortOrder);
   };
 }

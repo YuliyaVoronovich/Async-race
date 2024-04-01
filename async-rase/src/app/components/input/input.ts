@@ -33,7 +33,6 @@ export class Input extends BaseComponent {
       this.setAttribute('placeholder', placeholder);
     }
     if (value) {
-      console.log(value);
       this.setAttribute('value', value.toString());
     }
   }
