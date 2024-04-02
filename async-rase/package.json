@@ -1,9 +1,9 @@
 {
-  "name": "async-rase",
+  "name": "async-race",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://rolling-scopes-school.github.io/yuliyavoronovich-JSFE2023Q4/async-rase",
+  "homepage": "https://rolling-scopes-school.github.io/yuliyavoronovich-JSFE2023Q4/async-race",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -13,7 +13,7 @@
     "lint": "eslint --ext ts .",
     "lint:fix": "eslint --ext ts --fix .",
     "prepare": "cd .. && husky rss-puzzle/.husky",
-    "deploy": "gh-pages -d dist -e async-rase"
+    "deploy": "gh-pages -d dist -e async-race"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.3",

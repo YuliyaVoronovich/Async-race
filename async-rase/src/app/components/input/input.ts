@@ -5,43 +5,30 @@ interface IInput {
   classNameInput: string;
   name?: string;
   placeholder?: string;
-  value?: string | number;
+  value?: string;
   onInput?: (input: string) => void;
 }
 
-export class Input extends BaseComponent {
-  protected input: HTMLInputElement;
-
-  constructor({ type, classNameInput, name, placeholder, value, onInput }: IInput) {
+export class Input extends BaseComponent<HTMLInputElement> {
+  constructor({ classNameInput, name, placeholder, value, onInput }: IInput) {
     super({
-      tagName: 'input',
+      tag: 'input',
       className: classNameInput,
+      name,
+      placeholder,
+      value,
     });
-    this.input = this.node as HTMLInputElement;
 
     if (onInput) {
       this.addListener('input', () => onInput(this.getValue()));
     }
-
-    this.setAttributes(type, name ?? '', placeholder ?? '', value ?? '');
-  }
-
-  private setAttributes(type: string, name: string, placeholder: string, value: number | string): void {
-    this.setAttribute('name', name);
-    this.setAttribute('type', type);
-    if (placeholder) {
-      this.setAttribute('placeholder', placeholder);
-    }
-    if (value) {
-      this.setAttribute('value', value.toString());
-    }
   }
 
   public getValue(): string {
-    return this.input.value;
+    return this.node.value;
   }
 
   public setValue(value: string): void {
-    this.input.value = value;
+    this.node.value = value;
   }
 }

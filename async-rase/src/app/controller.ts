@@ -9,7 +9,7 @@ export default class Controller extends BaseComponent {
     const routerOutlet = new Page();
     super(
       {
-        tagName: 'div',
+        tag: 'div',
         className: 'container',
       },
       routerOutlet,

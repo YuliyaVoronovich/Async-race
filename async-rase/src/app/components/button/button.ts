@@ -10,7 +10,7 @@ interface IButton {
 export class Button extends BaseComponent {
   constructor({ className, textContent, onClick }: IButton) {
     super({
-      tagName: 'button',
+      tag: 'button',
       className,
       textContent,
     });
