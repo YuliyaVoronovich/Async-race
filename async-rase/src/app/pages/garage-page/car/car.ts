@@ -13,12 +13,12 @@ export class Car extends BaseComponent {
   private readonly carImage: BaseComponent;
 
   constructor(car: ICar) {
-    super({ tagName: 'div', className: 'car-wrapper-container' });
+    super({ tag: 'div', className: 'car-wrapper-container' });
     this.id = car.id;
     this.name = car.name;
-    const carWrapper = new BaseComponent({ tagName: 'div', className: 'car-wrapper' });
-    this.carName = new BaseComponent({ tagName: 'span', className: 'car-name', textContent: car.name });
-    this.carImage = new BaseComponent({ tagName: 'div', className: 'car-image' });
+    const carWrapper = new BaseComponent({ tag: 'div', className: 'car-wrapper' });
+    this.carName = new BaseComponent({ tag: 'span', className: 'car-name', textContent: car.name });
+    this.carImage = new BaseComponent({ tag: 'div', className: 'car-image' });
     this.carImage.setHTML(motoImage);
     this.carImage.setStyle('fill', car.color);
     carWrapper.appendChildren([this.carName, this.carImage]);

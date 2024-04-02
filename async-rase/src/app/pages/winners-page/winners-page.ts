@@ -11,9 +11,9 @@ export class WinnersPage extends BaseComponent {
 
   private countPages = 1;
 
-  private readonly header = new BaseComponent({ tagName: 'h2', className: 'title', textContent: `Winners ()` });
+  private readonly header = new BaseComponent({ tag: 'h2', className: 'title', textContent: `Winners ()` });
 
-  private readonly pageNumber = new BaseComponent({ tagName: 'h3', className: 'page-number', textContent: `Page #` });
+  private readonly pageNumber = new BaseComponent({ tag: 'h3', className: 'page-number', textContent: `Page #` });
 
   private readonly prevButton = new Button({ className: 'control-button prev-button', textContent: 'PREV' });
 
@@ -28,9 +28,9 @@ export class WinnersPage extends BaseComponent {
   private sortOrder = 'ASC';
 
   constructor() {
-    super({ tagName: 'div', className: 'winners-wrapper' });
+    super({ tag: 'div', className: 'winners-wrapper' });
     this.prevButton.addClass('disabled');
-    const controlsWrapper = new BaseComponent({ tagName: 'div', className: 'control-button-wrapper' });
+    const controlsWrapper = new BaseComponent({ tag: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
     this.winnersTable = new WinnersTable(this.sortWinner);
     this.appendChildren([this.header, controlsWrapper, this.winnersTable]);

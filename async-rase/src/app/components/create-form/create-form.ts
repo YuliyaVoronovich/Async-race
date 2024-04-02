@@ -37,7 +37,7 @@ export class CreateForm extends BaseComponent {
     private onUpdate?: (id: number, name: string, color: string) => void,
     private onRandome?: () => void,
   ) {
-    super({ tagName: 'form', className: 'create-form' });
+    super({ tag: 'form', className: 'create-form' });
     this.setAttribute('action', '');
     this.carName = new Input({
       type: 'text',
@@ -54,8 +54,8 @@ export class CreateForm extends BaseComponent {
       onInput: this.inputValueColor,
     });
     this.resetForm();
-    const inputsWrapper = new BaseComponent({ tagName: 'div', className: 'form-input-wrapper' });
-    const inputsWrapperUpdate = new BaseComponent({ tagName: 'div', className: 'form-input-wrapper' });
+    const inputsWrapper = new BaseComponent({ tag: 'div', className: 'form-input-wrapper' });
+    const inputsWrapperUpdate = new BaseComponent({ tag: 'div', className: 'form-input-wrapper' });
     inputsWrapper.appendChildren([this.carName, this.color, this.submit]);
     inputsWrapperUpdate.appendChildren([this.carNameUpdate, this.colorUpdate, this.update]);
     this.appendChildren([inputsWrapper, inputsWrapperUpdate, this.randomGenerate]);

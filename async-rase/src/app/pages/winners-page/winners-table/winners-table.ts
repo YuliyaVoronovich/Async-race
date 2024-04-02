@@ -2,22 +2,22 @@ import './winners-table.scss';
 import { BaseComponent } from '../../../components/base-component';
 
 export class WinnersTable extends BaseComponent {
-  private body = new BaseComponent({ tagName: 'tbody' });
+  private body = new BaseComponent({ tag: 'tbody' });
 
   private win: BaseComponent;
 
   private time: BaseComponent;
 
   constructor(sotrTableWin: (item: string) => void) {
-    super({ tagName: 'table', className: 'table' });
-    const head = new BaseComponent({ tagName: 'thead' });
-    const headRow = new BaseComponent({ tagName: 'tr' });
+    super({ tag: 'table', className: 'table' });
+    const head = new BaseComponent({ tag: 'thead' });
+    const headRow = new BaseComponent({ tag: 'tr' });
     const headers = [
-      new BaseComponent({ tagName: 'th', className: 'thead', textContent: 'Number' }),
-      new BaseComponent({ tagName: 'th', className: 'thead', textContent: 'Car' }),
-      new BaseComponent({ tagName: 'th', className: 'thead', textContent: 'Name' }),
-      (this.win = new BaseComponent({ tagName: 'th', className: 'thead', textContent: 'Wins' })),
-      (this.time = new BaseComponent({ tagName: 'th', className: 'thead', textContent: 'Best time' })),
+      new BaseComponent({ tag: 'th', className: 'thead', textContent: 'Number' }),
+      new BaseComponent({ tag: 'th', className: 'thead', textContent: 'Car' }),
+      new BaseComponent({ tag: 'th', className: 'thead', textContent: 'Name' }),
+      (this.win = new BaseComponent({ tag: 'th', className: 'thead', textContent: 'Wins' })),
+      (this.time = new BaseComponent({ tag: 'th', className: 'thead', textContent: 'Best time' })),
     ];
 
     headRow.appendChildren(headers);

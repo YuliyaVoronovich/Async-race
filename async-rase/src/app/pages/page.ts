@@ -5,14 +5,14 @@ export default class Page extends BaseComponent {
   private section: BaseComponent;
 
   constructor() {
-    super({ tagName: 'main', className: 'main' });
+    super({ tag: 'main', className: 'main' });
     this.section = new BaseComponent({
-      tagName: 'section',
+      tag: 'section',
       className: 'page-section',
     });
     const buttonWrapper = new BaseComponent(
       {
-        tagName: 'aside',
+        tag: 'aside',
         className: 'button-wrapper',
       },
       this.createButtonGarage(),

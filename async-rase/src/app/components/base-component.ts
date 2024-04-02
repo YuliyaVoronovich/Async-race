@@ -1,29 +1,44 @@
-export class BaseComponent {
-  protected node: HTMLElement;
+export function isNotNullable<T>(value: T): value is NonNullable<T> {
+  return value != null;
+}
 
-  private children: BaseComponent[] = [];
+export type Props<T extends HTMLElement = HTMLElement> = Partial<
+  Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName'>
+> & {
+  txt?: string;
+  tag?: keyof HTMLElementTagNameMap;
+};
 
-  constructor({ tagName = 'div', className = '', textContent = '' }, ...children: BaseComponent[]) {
-    this.node = document.createElement(tagName);
-    this.node.className = className;
-    this.node.textContent = textContent;
+export type PossibleChild = HTMLElement | BaseComponent | null;
 
-    if (children.length) {
-      this.appendChildren(children);
+export class BaseComponent<T extends HTMLElement = HTMLElement> {
+  protected node: T;
+
+  protected children: BaseComponent[] = [];
+
+  constructor(props: Props<T>, ...children: PossibleChild[]) {
+    if (props.txt) {
+      props.textContent = props.txt;
+    }
+    const node = document.createElement(props.tag ?? 'div') as T;
+    Object.assign(node, props);
+    this.node = node;
+    if (children.length > 0) {
+      this.appendChildren(children.filter(isNotNullable));
     }
   }
 
-  public append(child: BaseComponent): void {
-    this.children.push(child);
-    this.node.append(child.getNode());
+  public append(child: NonNullable<PossibleChild>): void {
+    if (child instanceof BaseComponent) {
+      this.children.push(child);
+      this.node.append(child.getNode());
+    } else {
+      this.node.append(child);
+    }
   }
 
-  public appendHtmlElement(child: HTMLElement): void {
-    this.node.append(child);
-  }
-
-  public appendChildren(children: BaseComponent[]): void {
-    children.forEach((child) => {
+  public appendChildren(children: PossibleChild[]): void {
+    children.filter(isNotNullable).forEach((child) => {
       this.append(child);
     });
   }

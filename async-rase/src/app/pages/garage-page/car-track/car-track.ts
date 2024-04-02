@@ -30,7 +30,7 @@ export class CarTrack extends BaseComponent {
   private readonly stopButton: Button;
 
   constructor({ currentCar, removeCar, updateCar, startAnimateCar, stopAnimateCar }: CarTrackType) {
-    super({ tagName: 'div', className: 'car-track' });
+    super({ tag: 'div', className: 'car-track' });
     this.id = currentCar.id;
     this.car = new Car(currentCar);
     this.updateButton = new Button({
@@ -43,7 +43,7 @@ export class CarTrack extends BaseComponent {
       textContent: 'D',
       onClick: () => removeCar(this.id, this),
     });
-    const controls = new BaseComponent({ tagName: 'span', className: 'controls' });
+    const controls = new BaseComponent({ tag: 'span', className: 'controls' });
     this.startButton = new Button({
       className: 'track-button start-button',
       textContent: 'Start',

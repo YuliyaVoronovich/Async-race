@@ -24,14 +24,14 @@ export class GaragePage extends BaseComponent {
 
   private countPages = 1;
 
-  private readonly header = new BaseComponent({ tagName: 'h2', className: 'title', textContent: `Garage ()` });
+  private readonly header = new BaseComponent({ tag: 'h2', className: 'title', textContent: `Garage ()` });
 
-  private readonly pageNumber = new BaseComponent({ tagName: 'h3', className: 'page-number', textContent: `Page #` });
+  private readonly pageNumber = new BaseComponent({ tag: 'h3', className: 'page-number', textContent: `Page #` });
 
   private readonly form: CreateForm;
 
   private readonly tracksContainer = new BaseComponent({
-    tagName: 'div',
+    tag: 'div',
     className: 'garage-tracks',
   });
 
@@ -54,15 +54,15 @@ export class GaragePage extends BaseComponent {
   private readonly countMsInSeconds = 1000;
 
   constructor() {
-    super({ tagName: 'div', className: 'garage-wrapper' });
+    super({ tag: 'div', className: 'garage-wrapper' });
     this.prevButton.addClass('disabled');
     this.resetAll.addClass('disabled');
 
-    const controlsWrapper = new BaseComponent({ tagName: 'div', className: 'control-button-wrapper' });
+    const controlsWrapper = new BaseComponent({ tag: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
     this.form = new CreateForm(this.getFormData, this.getFormDataUpdate, this.randomGenerateCars);
-    const wrapper = new BaseComponent({ tagName: 'div', className: 'wrapper' });
-    const controlsStartWrapper = new BaseComponent({ tagName: 'div', className: 'control-race-wrapper' });
+    const wrapper = new BaseComponent({ tag: 'div', className: 'wrapper' });
+    const controlsStartWrapper = new BaseComponent({ tag: 'div', className: 'control-race-wrapper' });
 
     controlsStartWrapper.appendChildren([this.raceAll, this.resetAll]);
     wrapper.appendChildren([this.form, controlsStartWrapper]);
