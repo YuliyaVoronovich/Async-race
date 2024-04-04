@@ -41,7 +41,6 @@
     "@typescript-eslint/consistent-type-imports": "error",
     "@stylistic/ts/indent": ["error", 2],
     "class-methods-use-this": "off",
-    "indent": "off",
     "prettier/prettier": [
       "error",
       {

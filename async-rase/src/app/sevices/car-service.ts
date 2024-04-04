@@ -65,12 +65,10 @@ class CarService {
       });
   }
 
-  public async updateCar(id: number, name: string, color: string): Promise<void> {
-    return updateCar(id, { name, color })
-      .then(() => {})
-      .catch((error: Error) => {
-        throw new Error(error.message);
-      });
+  public async updateCar(id: number, name: string, color: string) {
+    return updateCar(id, { name, color }).catch((error: Error) => {
+      throw new Error(error.message);
+    });
   }
 }
 

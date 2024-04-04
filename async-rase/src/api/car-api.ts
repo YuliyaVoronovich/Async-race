@@ -1,29 +1,5 @@
-import { PAGE_LIMIT_GARAGE, baseUrl } from '../app/constants';
-
-async function request<T>(
-  endpoint: string,
-  { body, method, headers }: { body?: object | null; method: string; headers?: HeadersInit } = { method: 'GET' },
-): Promise<{ body: T; headers: Headers }> {
-  const defaultHeaders = { 'content-type': 'application/json' };
-  const config = {
-    method,
-    headers: {
-      ...defaultHeaders,
-      ...headers,
-    },
-    body: body ? JSON.stringify(body) : null,
-  };
-  return fetch(`${baseUrl}/${endpoint}`, config).then(async (response) => {
-    if (response.ok) {
-      return {
-        body: (await response.json()) as T,
-        headers: response.headers,
-      };
-    }
-    const errorMessage = await response.text();
-    return Promise.reject(new Error(errorMessage));
-  });
-}
+import { request } from '../app/utils/request';
+import { PAGE_LIMIT_GARAGE } from '../app/constants';
 
 export function getCars(page: number, limit = PAGE_LIMIT_GARAGE) {
   return request(`garage?_page=${page}&_limit=${limit}`);

@@ -45,11 +45,11 @@ export class WinnersPage extends BaseComponent {
 
     winnersService.winnersCount.subscribe(this.onWinnersCountChange);
 
-    this.createWinners(winnersService.saveValues.sort.field, winnersService.saveValues.sort.order)
-      .then(() => {})
-      .catch((error: Error) => {
+    this.createWinners(winnersService.saveValues.sort.field, winnersService.saveValues.sort.order).catch(
+      (error: Error) => {
         throw new Error(error.message);
-      });
+      },
+    );
     this.nextPage();
     this.prevPage();
   }
@@ -83,11 +83,9 @@ export class WinnersPage extends BaseComponent {
 
   private updateTracks(sort?: string, order?: string): void {
     this.winnersTable.bodyNode.destroyChildren();
-    this.createWinners(sort, order)
-      .then(() => {})
-      .catch((error: Error) => {
-        throw new Error(error.message);
-      });
+    this.createWinners(sort, order).catch((error: Error) => {
+      throw new Error(error.message);
+    });
     this.checkPrevButton();
     this.checkNextButton();
   }

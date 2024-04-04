@@ -30,7 +30,7 @@ export class CreateForm extends BaseComponent {
     textContent: 'Generate random car',
   });
 
-  private idCar = 0;
+  private carId = 0;
 
   constructor(
     private onSubmit?: (name: string, color: string) => void,
@@ -84,7 +84,7 @@ export class CreateForm extends BaseComponent {
       e.preventDefault();
       const name = this.carNameUpdate.getValue();
       const color = this.colorUpdate.getValue();
-      this.onUpdate?.(this.idCar, name, color);
+      this.onUpdate?.(this.carId, name, color);
       this.resetForm();
     });
   };
@@ -93,7 +93,7 @@ export class CreateForm extends BaseComponent {
     this.carNameUpdate.setValue(car.name);
     this.carNameUpdate.removeAttribute('disabled');
     this.colorUpdate.setValue(car.color);
-    this.idCar = car.id;
+    this.carId = car.id;
   }
 
   private resetForm() {

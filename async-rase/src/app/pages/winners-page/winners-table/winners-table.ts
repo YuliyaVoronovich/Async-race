@@ -25,13 +25,11 @@ export class WinnersTable extends BaseComponent {
     this.append(head);
     this.append(this.body);
 
-    this.win.addListener('click', (e: Event) => {
-      e.preventDefault();
+    this.win.addListener('click', () => {
       sotrTableWin('wins');
     });
 
-    this.time.addListener('click', (e: Event) => {
-      e.preventDefault();
+    this.time.addListener('click', () => {
       sotrTableWin('time');
     });
   }

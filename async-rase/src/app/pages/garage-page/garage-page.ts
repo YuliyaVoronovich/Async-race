@@ -47,8 +47,6 @@ export class GaragePage extends BaseComponent {
 
   private readonly onCarsCountChange: (count: number) => void;
 
-  private isStop = false;
-
   private readonly modal = new Modal();
 
   private readonly countMsInSeconds = 1000;
@@ -57,7 +55,6 @@ export class GaragePage extends BaseComponent {
     super({ tag: 'div', className: 'garage-wrapper' });
     this.prevButton.addClass('disabled');
     this.resetAll.addClass('disabled');
-    this.nextButton.addClass('disabled');
 
     const controlsWrapper = new BaseComponent({ tag: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
@@ -70,15 +67,14 @@ export class GaragePage extends BaseComponent {
 
     this.onCarsCountChange = (count: number) => {
       this.header.setTextContent(`Garage (${count})`);
-      this.countPages = Math.ceil(count / PAGE_LIMIT_GARAGE);
+      this.countPages = Math.ceil(count / PAGE_LIMIT_GARAGE) ? Math.ceil(count / PAGE_LIMIT_GARAGE) : 1;
       this.updatePageTitle();
       this.checkPrevButton();
+      this.checkNextButton();
     };
-    this.createTracks()
-      .then(() => {})
-      .catch((error: Error) => {
-        throw new Error(error.message);
-      });
+    this.createTracks().catch((error: Error) => {
+      throw new Error(error.message);
+    });
     carService.carsCount.subscribe(this.onCarsCountChange);
     this.appendChildren([this.header, controlsWrapper, wrapper, this.tracksContainer, this.modal]);
 
@@ -131,11 +127,11 @@ export class GaragePage extends BaseComponent {
   private stopAllCars = (): void => {
     this.resetAll.addListener('click', (e: Event) => {
       e.preventDefault();
-      Promise.all(this.carTracks.map((item) => this.stopAnimateCar(item.carTrack, this.raceAll, this.resetAll)))
-        .then(() => {})
-        .catch((error: Error) => {
+      Promise.all(this.carTracks.map((item) => this.stopAnimateCar(item.carTrack, this.raceAll, this.resetAll))).catch(
+        (error: Error) => {
           throw new Error(error.message);
-        });
+        },
+      );
     });
   };
 
@@ -168,11 +164,9 @@ export class GaragePage extends BaseComponent {
 
   private updateTracks(): void {
     this.tracksContainer.destroyChildren();
-    this.createTracks()
-      .then(() => {})
-      .catch((error: Error) => {
-        throw new Error(error.message);
-      });
+    this.createTracks().catch((error: Error) => {
+      throw new Error(error.message);
+    });
     this.checkNextButton();
   }
 

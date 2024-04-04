@@ -24,7 +24,7 @@ export class Modal extends BaseComponent {
   }
 
   public set content(text: string) {
-    this.modalText.setHTML(text);
+    this.modalText.setTextContent(text);
   }
 
   public toggleModal() {
