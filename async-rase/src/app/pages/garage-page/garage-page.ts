@@ -4,7 +4,7 @@ import { winnersService } from '../../sevices/winners-service';
 import { chooseEngine, startDrive } from '../../../api/engine-api';
 import { carService } from '../../sevices/car-service';
 import { BaseComponent } from '../../components/base-component';
-import { CreateForm } from '../../components/create-form/create-form';
+import { FormCreate } from '../../components/create-form/create-form';
 import { CarTrack } from './car-track/car-track';
 import { Button } from '../../components/button/button';
 import type { ICar } from '../../interfaces/car';
@@ -28,7 +28,7 @@ export class GaragePage extends BaseComponent {
 
   private readonly pageNumber = new BaseComponent({ tag: 'h3', className: 'page-number', textContent: `Page #` });
 
-  private readonly form: CreateForm;
+  private readonly form: FormCreate;
 
   private readonly tracksContainer = new BaseComponent({
     tag: 'div',
@@ -58,7 +58,7 @@ export class GaragePage extends BaseComponent {
 
     const controlsWrapper = new BaseComponent({ tag: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
-    this.form = new CreateForm(this.getFormData, this.getFormDataUpdate, this.randomGenerateCars);
+    this.form = new FormCreate(this.getFormData, this.getFormDataUpdate, this.randomGenerateCars);
     const wrapper = new BaseComponent({ tag: 'div', className: 'wrapper' });
     const controlsStartWrapper = new BaseComponent({ tag: 'div', className: 'control-race-wrapper' });
 
@@ -220,7 +220,7 @@ export class GaragePage extends BaseComponent {
   };
 
   private updateCar = (car: ICar): void => {
-    this.form.fullDataOfCar(car);
+    this.form.fillDataUpdatesOfSelectCar(car);
   };
 
   private startAnimateCar = async (

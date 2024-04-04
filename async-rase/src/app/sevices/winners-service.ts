@@ -1,4 +1,4 @@
-import type { SaveValuesWins } from 'src/types/save-values';
+import type { ValuesStateWins } from 'src/app/interfaces/save-values';
 import { getCar } from '../../api/car-api';
 import { getWinners, removeWinner, getWinner, createWinner, updateWinner } from '../../api/winner-api';
 import type { IWinner } from '../interfaces/winner';
@@ -6,7 +6,7 @@ import Observable from '../utils/observable';
 import type { ICar } from '../interfaces/car';
 
 class WinnersService {
-  public saveValues: SaveValuesWins = {
+  public saveValues: ValuesStateWins = {
     currentPage: 1,
     sort: {
       field: '',

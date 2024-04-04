@@ -1,4 +1,4 @@
-export type SaveValuesCar = {
+export type ValuesStateCar = {
   currentPage: number;
   values: {
     name: string;
@@ -6,7 +6,7 @@ export type SaveValuesCar = {
   };
 };
 
-export type SaveValuesWins = {
+export type ValuesStateWins = {
   currentPage: number;
   sort: {
     field: string;

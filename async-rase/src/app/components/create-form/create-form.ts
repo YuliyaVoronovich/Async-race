@@ -5,7 +5,7 @@ import { BaseComponent } from '../base-component';
 import { Input } from '../input/input';
 import { Button } from '../button/button';
 
-export class CreateForm extends BaseComponent {
+export class FormCreate extends BaseComponent<HTMLFormElement> {
   private readonly color: Input;
 
   private readonly carName: Input;
@@ -38,7 +38,7 @@ export class CreateForm extends BaseComponent {
     private onRandome?: () => void,
   ) {
     super({ tag: 'form', className: 'create-form' });
-    this.setAttribute('action', '');
+    this.node.action = '';
     this.carName = new Input({
       type: 'text',
       classNameInput: 'form-input-name',
@@ -53,7 +53,7 @@ export class CreateForm extends BaseComponent {
       value: carService.saveValues.values.color,
       onInput: this.inputValueColor,
     });
-    this.resetForm();
+    this.resetUpdatesElementsOfForm();
     const inputsWrapper = new BaseComponent({ tag: 'div', className: 'form-input-wrapper' });
     const inputsWrapperUpdate = new BaseComponent({ tag: 'div', className: 'form-input-wrapper' });
     inputsWrapper.appendChildren([this.carName, this.color, this.submit]);
@@ -74,8 +74,7 @@ export class CreateForm extends BaseComponent {
       const name = this.carName.getValue();
       const color = this.color.getValue();
       this.onSubmit?.(name, color);
-      this.carName.setValue('');
-      this.color.setValue('');
+      this.reset();
     });
   };
 
@@ -85,18 +84,23 @@ export class CreateForm extends BaseComponent {
       const name = this.carNameUpdate.getValue();
       const color = this.colorUpdate.getValue();
       this.onUpdate?.(this.carId, name, color);
-      this.resetForm();
+      this.resetUpdatesElementsOfForm();
     });
   };
 
-  public fullDataOfCar(car: ICar) {
+  public fillDataUpdatesOfSelectCar(car: ICar) {
     this.carNameUpdate.setValue(car.name);
     this.carNameUpdate.removeAttribute('disabled');
     this.colorUpdate.setValue(car.color);
     this.carId = car.id;
   }
 
-  private resetForm() {
+  private reset() {
+    this.carName.setValue('');
+    this.color.setValue('');
+  }
+
+  private resetUpdatesElementsOfForm() {
     this.carNameUpdate.setAttribute('disabled', 'disabled');
     this.carNameUpdate.setValue('');
     this.colorUpdate.setValue('');

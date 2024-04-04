@@ -1,11 +1,11 @@
-import type { SaveValuesCar } from 'src/types/save-values';
+import type { ValuesStateCar } from 'src/app/interfaces/save-values';
 import { createCar, getCars, removeCar, updateCar, getCar } from '../../api/car-api';
 import type { ICar } from '../interfaces/car';
 import Observable from '../utils/observable';
 import { getRandomName, getRandomColor } from '../utils/random-generate';
 
 class CarService {
-  public saveValues: SaveValuesCar = {
+  public saveValues: ValuesStateCar = {
     currentPage: 1,
     values: {
       name: '',
