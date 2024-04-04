@@ -25,7 +25,7 @@ class WinnersService {
     this.winnersCount.notify(Number(winners.count));
     return Promise.all(
       winners.items.map(async ({ id, wins, time }: IWinner) => {
-        const car = await getCar(id);
+        const car = (await (await getCar(id)).body) as ICar;
         return {
           id,
           name: car.name,

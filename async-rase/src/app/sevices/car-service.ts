@@ -21,13 +21,13 @@ class CarService {
 
   public readonly carsCount = new Observable<number>(this.carCountStart);
 
-  public async getCars(page: number): Promise<ICar[]> {
+  public async getCars(page: number) {
     const cars = await getCars(page);
-    this.carsCount.notify(Number(cars.count));
-    return cars.items;
+    this.carsCount.notify(Number(cars.headers.get('X-Total-Count')));
+    return cars.body as ICar[];
   }
 
-  public async getCar(page: number): Promise<ICar> {
+  public async getCar(page: number) {
     const car = await getCar(page);
     return car;
   }

@@ -57,6 +57,7 @@ export class GaragePage extends BaseComponent {
     super({ tag: 'div', className: 'garage-wrapper' });
     this.prevButton.addClass('disabled');
     this.resetAll.addClass('disabled');
+    this.nextButton.addClass('disabled');
 
     const controlsWrapper = new BaseComponent({ tag: 'div', className: 'control-button-wrapper' });
     controlsWrapper.appendChildren([this.pageNumber, this.prevButton, this.nextButton]);
@@ -72,7 +73,6 @@ export class GaragePage extends BaseComponent {
       this.countPages = Math.ceil(count / PAGE_LIMIT_GARAGE);
       this.updatePageTitle();
       this.checkPrevButton();
-      this.checkNextButton();
     };
     this.createTracks()
       .then(() => {})
@@ -213,6 +213,7 @@ export class GaragePage extends BaseComponent {
     carService
       .removeCar(id)
       .then(() => {
+        this.updateTracks();
         track.destroy();
         winnersService
           .removeWinner(id)

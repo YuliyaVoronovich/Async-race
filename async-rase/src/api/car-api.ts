@@ -1,10 +1,9 @@
-import type { ICar } from '../app/interfaces/car';
 import { PAGE_LIMIT_GARAGE, baseUrl } from '../app/constants';
 
-async function request(
+async function request<T>(
   endpoint: string,
   { body, method, headers }: { body?: object | null; method: string; headers?: HeadersInit } = { method: 'GET' },
-) {
+): Promise<{ body: T; headers: Headers }> {
   const defaultHeaders = { 'content-type': 'application/json' };
   const config = {
     method,
@@ -17,8 +16,8 @@ async function request(
   return fetch(`${baseUrl}/${endpoint}`, config).then(async (response) => {
     if (response.ok) {
       return {
-        items: (await response.json()) as ICar[],
-        count: response.headers.get('X-Total-Count') ?? '0',
+        body: (await response.json()) as T,
+        headers: response.headers,
       };
     }
     const errorMessage = await response.text();
@@ -45,7 +44,6 @@ export function updateCar(id: number, body: { name: string; color: string }) {
   });
 }
 
-export async function getCar(id: number): Promise<ICar> {
-  const response = await fetch(`${baseUrl}/garage/${id}`);
-  return response.json() as Promise<ICar>;
+export function getCar(id: number) {
+  return request(`garage/${id}`);
 }
